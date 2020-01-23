@@ -1,6 +1,7 @@
 import { Inject, InjectionToken } from "@angular/core";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 import { distinctUntilChanged } from "rxjs/internal/operators/distinctUntilChanged";
+import { shareReplay } from "rxjs/internal/operators/shareReplay";
 import { pluck } from "rxjs/internal/operators/pluck";
 import { State } from "./state.class";
 import { AppState } from "../store";
@@ -34,7 +35,7 @@ export class Store {
   }
 
   get(key: keyof AppState) {
-    return this.store.pipe(pluck(key), distinctUntilChanged());
+    return this.store.pipe(pluck(key), distinctUntilChanged(), shareReplay({ refCount: true, bufferSize: 1 }));
   }
 
   use(key: keyof AppState) {
