@@ -1,36 +1,39 @@
-import { Component, ViewEncapsulation } from "@angular/core";
-import { Observable } from "rxjs";
-import { Store } from "src/app/store/store.service";
-import { CounterState } from "./state";
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DispatchFunction } from 'src/app/core/store/models';
+import { StoreService } from 'src/app/core/store/store.service';
+import { Counter } from './models/counter.type';
+import { CounterActions } from './state';
 
 @Component({
-  selector: "counter",
-  templateUrl: "./counter.component.html"
+  selector: 'counter',
+  templateUrl: './counter.component.html'
 })
 export class CounterComponent {
-  counterState: CounterState;
-  counter$: Observable<number>;
+  counter$: Observable<Counter>;
+  dispatch: DispatchFunction<CounterActions>;
 
-  constructor(private store: Store) {
-    this.counterState = this.store.use("count");
-    this.counter$ = this.store.get("count");
+  constructor(private _store: StoreService) {
+    const { observable, dispatch, getValue } = this._store.use('counter');
+    this.counter$ = observable;
+    this.dispatch = dispatch;
 
-    // this.counter$.subscribe(value => console.log("counter changed"));
+    setTimeout(() => console.log(getValue()), 5000);
   }
 
   increment() {
-    this.counterState.dispatch("INC");
+    this.dispatch('INC');
   }
 
   decrement() {
-    this.counterState.dispatch("DEC");
+    this.dispatch('DEC');
   }
 
   reset() {
-    this.counterState.dispatch("INIT");
+    this.dispatch('INIT');
   }
 
   set(value) {
-    this.counterState.dispatch("SET", value);
+    this.dispatch('SET', value);
   }
 }

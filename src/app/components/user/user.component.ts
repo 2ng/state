@@ -1,35 +1,38 @@
-import { Component, ViewEncapsulation } from "@angular/core";
-import { Observable } from "rxjs";
-import { Store } from "src/app/store/store.service";
-import { UserState, User } from "./state";
-import { CounterState } from "../counter/state";
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DispatchFunction } from 'src/app/core/store/models';
+import { StoreService } from 'src/app/core/store/store.service';
+import { CounterActions } from '../counter/state';
+import { User } from './models/user.interface';
+import { UserActions } from './state';
 
 @Component({
-  selector: "user",
-  templateUrl: "./user.component.html"
+  selector: 'user',
+  templateUrl: './user.component.html'
 })
 export class UserComponent {
-  userState: UserState;
   user$: Observable<User>;
+  dispatch: DispatchFunction<UserActions>;
+  dispatchCounter: DispatchFunction<CounterActions>;
 
-  counterState: CounterState;
+  constructor(private _storeService: StoreService) {
+    const { dispatch, observable } = this._storeService.use('user');
+    this.user$ = observable;
+    this.dispatch = dispatch;
 
-  constructor(private store: Store) {
-    this.userState = this.store.use("user");
-    this.user$ = this.store.get("user");
-
-    this.counterState = this.store.use("count");
+    const { dispatch: dispatchCounter } = this._storeService.use('counter');
+    this.dispatchCounter = dispatchCounter;
   }
 
   uppercase() {
-    this.userState.dispatch("UPPERCASE");
+    this.dispatch('UPPERCASE');
   }
 
   lowercase() {
-    this.userState.dispatch("LOWERCASE");
+    this.dispatch('LOWERCASE');
   }
 
   increment() {
-    this.counterState.dispatch("INC");
+    this.dispatchCounter('INC');
   }
 }
