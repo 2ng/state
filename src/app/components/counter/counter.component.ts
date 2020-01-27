@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { DispatchFunction } from 'src/app/core/store/models';
 import { StoreService } from 'src/app/core/store/store.service';
 import { Counter } from './models/counter.type';
-import { CounterActions } from './state';
+import { CounterActions } from './state/counter';
 
 @Component({
   selector: 'counter',
@@ -17,8 +17,6 @@ export class CounterComponent {
     const { observable, dispatch, getValue } = this._store.use('counter');
     this.counter$ = observable;
     this.dispatch = dispatch;
-
-    setTimeout(() => console.log(getValue()), 5000);
   }
 
   increment() {

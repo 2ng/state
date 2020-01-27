@@ -6,12 +6,27 @@
   margin: 0 auto;
   padding: 24px;
 
+  button,
+  input {
+    border: 0;
+  }
+
   &.counter {
     background-color: lightblue;
   }
 
   &.user {
     background-color: lightgrey;
+  }
+
+  & .add-button {
+    margin-top: 10px;
+    background-color: lightskyblue;
+  }
+
+  & .delete-button {
+    margin-top: 10px;
+    background-color: lightcoral;
   }
 
   h1 {
