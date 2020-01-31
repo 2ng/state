@@ -5,21 +5,19 @@ import { StateConfig } from './models';
 import { STORE_TOKEN } from './store.token';
 
 @Injectable()
-export class StoreService<StateKeys> {
-  private state$ = new BehaviorSubject<{ [key: string]: any }>({});
+export class StoreService<StateKeys extends string> {
+  private state$ = new BehaviorSubject<{ [key in StateKeys]?: any }>({});
   private actions: { [key: string]: any } = {};
 
-  constructor(@Inject(STORE_TOKEN) private config: StateConfig[]) {
+  constructor(@Inject(STORE_TOKEN) private config: StateConfig<StateKeys>[]) {
     this.config.forEach(({ name, actions }) => this.add({ name, actions }));
-
-    this.state$.subscribe(state => console.log(state));
   }
 
   private set state(value) {
     this.state$.next(value);
   }
 
-  private dispatch(stateKey) {
+  private dispatch(stateKey: StateKeys) {
     return (action, data?) => {
       const actionFn = this.actions[stateKey][action];
       const state = this.state$.value[stateKey];
@@ -31,7 +29,7 @@ export class StoreService<StateKeys> {
     };
   }
 
-  private getValue(key) {
+  private getValue(key: StateKeys) {
     return () => this.state$.value[key];
   }
 
@@ -39,7 +37,7 @@ export class StoreService<StateKeys> {
     return this.state$.pipe(pluck(key), distinctUntilChanged(), shareReplay({ refCount: true, bufferSize: 1 }));
   }
 
-  private omit(key) {
+  private omit(key: StateKeys) {
     return () => {
       if (!this.actions[key]) return;
 
@@ -51,7 +49,7 @@ export class StoreService<StateKeys> {
     };
   }
 
-  add({ name, actions }) {
+  add({ name, actions }: StateConfig<StateKeys>) {
     if (!this.actions[name]) {
       this.actions[name] = actions;
       this.dispatch(name)('INIT');
