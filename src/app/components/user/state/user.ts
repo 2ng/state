@@ -1,18 +1,13 @@
-import { StateActions } from 'src/app/core/store/models';
+import { StateConfig } from 'src/app/core/store/models';
 import { User } from '../models/user.interface';
 
-export interface UserActions extends StateActions<User> {
-  UPPERCASE: (state: User) => User;
-  LOWERCASE: (state: User) => User;
-}
+export type UserActions = 'INIT' | 'UPPERCASE' | 'LOWERCASE';
 
-const actions: UserActions = {
-  INIT: () => ({ name: 'andrey' }),
-  UPPERCASE: user => ({ ...user, name: user.name.toUpperCase() }),
-  LOWERCASE: state => ({ ...state, name: state.name.toLowerCase() })
-};
-
-export const USER_STATE_CONFIG = {
+export const USER_STATE_CONFIG: StateConfig<User, UserActions> = {
   name: 'user',
-  actions
+  actions: {
+    INIT: () => ({ name: 'andrey' }),
+    UPPERCASE: state => ({ name: state.name.toUpperCase() }),
+    LOWERCASE: state => ({ name: state.name.toLowerCase() })
+  }
 };

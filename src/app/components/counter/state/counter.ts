@@ -1,20 +1,14 @@
-import { StateActions } from 'src/app/core/store/models';
+import { StateConfig } from 'src/app/core/store/models';
 import { Counter } from '../models/counter.type';
 
-export interface CounterActions extends StateActions<Counter> {
-  INC: (state: number) => number;
-  DEC: (state: number) => number;
-  SET: (state: number, data: number) => number;
-}
+export type CounterActions = 'INIT' | 'INC' | 'DEC' | 'SET';
 
-const actions: CounterActions = {
-  INIT: () => 0,
-  INC: state => ++state,
-  DEC: state => --state,
-  SET: (state, value) => value
-};
-
-export const COUNTER_STATE_CONFIG = {
+export const COUNTER_STATE_CONFIG: StateConfig<Counter, CounterActions> = {
   name: 'counter',
-  actions
+  actions: {
+    INIT: () => 0,
+    INC: state => ++state,
+    DEC: state => --state,
+    SET: (state, value) => value
+  }
 };

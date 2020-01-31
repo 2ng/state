@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { distinctUntilChanged, pluck, shareReplay } from 'rxjs/operators';
-import { AppStateKeys, Config } from './models';
+import { StateConfig } from './models';
 import { STORE_TOKEN } from './store.token';
 
 @Injectable()
-export class StoreService {
+export class StoreService<StateKeys> {
   private state$ = new BehaviorSubject<{ [key: string]: any }>({});
   private actions: { [key: string]: any } = {};
 
-  constructor(@Inject(STORE_TOKEN) private config: Config[]) {
+  constructor(@Inject(STORE_TOKEN) private config: StateConfig[]) {
     this.config.forEach(({ name, actions }) => this.add({ name, actions }));
 
     this.state$.subscribe(state => console.log(state));
@@ -63,7 +63,7 @@ export class StoreService {
     };
   }
 
-  use(key: AppStateKeys) {
+  use(key: StateKeys) {
     return {
       observable: this.pluck(key),
       dispatch: this.dispatch(key),

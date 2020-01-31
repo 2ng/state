@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DispatchFunction } from 'src/app/core/store/models';
+import { AppStateKeys, DispatchFunction } from 'src/app/core/store/models';
 import { StoreService } from 'src/app/core/store/store.service';
 import { CounterActions } from '../counter/state/counter';
 import { User } from './models/user.interface';
@@ -18,18 +18,16 @@ export class UserComponent {
 
   omit: () => void;
 
-  constructor(private _storeService: StoreService) {
+  constructor(private _storeService: StoreService<AppStateKeys>) {
     const { dispatch, observable } = this._storeService.use('user');
     this.user$ = observable;
     this.dispatch = dispatch;
 
-    const { dispatch: dispatchCounter } = this._storeService.use('counter');
-    this.dispatchCounter = dispatchCounter;
+    this.dispatchCounter = this._storeService.use('counter').dispatch;
   }
 
   addTempState() {
-    const { omit } = this._storeService.add(TEMP_STATE_CONFIG);
-    this.omit = omit;
+    this.omit = this._storeService.add(TEMP_STATE_CONFIG).omit;
   }
 
   deleteTempState() {
