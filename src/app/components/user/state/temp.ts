@@ -6,7 +6,7 @@ export interface Temp {
 
 export const TEMP_STATE_CONFIG: StateConfig<AppStateKeys, Temp> = {
   name: 'temp',
-  actions: {
+  actions: (store) => ({
     INIT: () => ({ temp: 'init temp' })
-  }
+  })
 };

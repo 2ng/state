@@ -19,13 +19,9 @@ export class StoreService<StateKeys extends string> {
 
   private dispatch(stateKey: StateKeys) {
     return (action, data?) => {
-      const actionFn = this.actions[stateKey][action];
-      const state = this.state$.value[stateKey];
-
-      this.state = {
-        ...this.state$.value,
-        [stateKey]: actionFn(state, data)
-      };
+      const actionFn = this.actions[stateKey](this)[action];
+      this.state$.value[stateKey] = actionFn(this.state$.value[stateKey], data);
+      this.state$.next(this.state$.value);
     };
   }
 
@@ -34,7 +30,7 @@ export class StoreService<StateKeys extends string> {
   }
 
   private pluck(key) {
-    return this.state$.pipe(pluck(key), distinctUntilChanged(), shareReplay({ refCount: true, bufferSize: 1 }));
+    return this.state$.pipe(pluck(key), distinctUntilChanged());
   }
 
   private omit(key: StateKeys) {

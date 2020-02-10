@@ -3,11 +3,25 @@ import { User } from '../models/user.interface';
 
 export type UserActions = 'INIT' | 'UPPERCASE' | 'LOWERCASE';
 
-export const USER_STATE_CONFIG: StateConfig<AppStateKeys, User, UserActions> = {
+// export const USER_STATE_CONFIG: StateConfig<AppStateKeys, User, UserActions> = {
+//   name: 'user',
+//   actions: {
+//     INIT: () => ({ name: 'andrey' }),
+//     UPPERCASE: state => ({ name: state.name.toUpperCase() }),
+//     LOWERCASE: state => ({ name: state.name.toLowerCase() })
+//   }
+// };
+
+
+export const USER_STATE_CONFIG = {
   name: 'user',
-  actions: {
+  actions: (store) => ({
     INIT: () => ({ name: 'andrey' }),
-    UPPERCASE: state => ({ name: state.name.toUpperCase() }),
+    UPPERCASE: state => {
+      store.use('counter').dispatch('INC');
+      store.use('counter').dispatch('SET', 10);
+      return { name: state.name.toUpperCase() }
+    },
     LOWERCASE: state => ({ name: state.name.toLowerCase() })
-  }
-};
+  })
+}

@@ -2,7 +2,7 @@ export type StateActions<State, Actions extends string = 'INIT'> = { [key in Act
 
 export type StateConfig<StateKeys, State = any, Actions extends string = 'INIT'> = {
   name: StateKeys;
-  actions: StateActions<State, Actions>;
+  actions: (store: any) => StateActions<State, Actions>;
 };
 
 export type DispatchFunction<Actions> = (key: Actions, data?: any) => void;
