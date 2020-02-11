@@ -9,7 +9,8 @@ export class StoreService<StateKeys extends string> {
   private _actions: {[key: string]: Map<string, (state: any, data?: any) => any>} = {};
 
   constructor(@Inject(STORE_TOKEN) private config) {
-    this.config.forEach(({name, actions}) => {
+    this.config.forEach(({name, actions, modules}) => {
+      if (modules) modules.forEach(m => m(actions));
 
       this._actions[name] = actions;
       this.dispatch(name)('@INIT');

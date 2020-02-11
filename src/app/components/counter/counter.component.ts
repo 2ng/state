@@ -27,6 +27,14 @@ export class CounterComponent {
     this.dispatch('DEC');
   }
 
+  undo() {
+    this.dispatch('@UNDO');
+  }
+
+  redo() {
+    this.dispatch('@REDO');
+  }
+
   reset() {
     this.dispatch('@INIT');
   }

@@ -1,7 +1,8 @@
 import { StateConfig, AppStateKeys } from 'src/app/core/store/models';
 import { Counter } from '../models/counter.type';
+import { undoable } from 'src/app/core/modules/undoable';
 
-export type CounterActions = '@INIT' | 'INC' | 'DEC' | 'SET';
+export type CounterActions = '@INIT' | '@UNDO' | '@REDO' | 'INC' | 'DEC' | 'SET';
 
 const actions = new Map();
 
@@ -12,5 +13,6 @@ actions.set('SET', (state, value) => value);
 
 export const COUNTER_STATE_CONFIG = {
   name: 'counter',
-  actions
+  actions,
+  modules: [undoable()]
 };
