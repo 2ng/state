@@ -4,7 +4,6 @@ import { AppStateKeys, DispatchFunction } from 'src/app/core/store/models';
 import { StoreService } from 'src/app/core/store/store.service';
 import { CounterActions } from '../counter/state/counter';
 import { User } from './models/user.interface';
-import { TEMP_STATE_CONFIG } from './state/temp';
 import { UserActions } from './state/user';
 
 @Component({
@@ -16,22 +15,12 @@ export class UserComponent {
   dispatch: DispatchFunction<UserActions>;
   dispatchCounter: DispatchFunction<CounterActions>;
 
-  omit: () => void;
-
   constructor(private _storeService: StoreService<AppStateKeys>) {
     const { dispatch, observable } = this._storeService.use('user');
     this.user$ = observable;
     this.dispatch = dispatch;
 
     this.dispatchCounter = this._storeService.use('counter').dispatch;
-  }
-
-  addTempState() {
-    this.omit = this._storeService.add(TEMP_STATE_CONFIG).omit;
-  }
-
-  deleteTempState() {
-    this.omit();
   }
 
   uppercase() {

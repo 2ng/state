@@ -28,7 +28,7 @@ export class CounterComponent {
   }
 
   reset() {
-    this.dispatch('INIT');
+    this.dispatch('@INIT');
   }
 
   set(value) {

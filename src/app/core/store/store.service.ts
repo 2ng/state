@@ -1,67 +1,38 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { distinctUntilChanged, pluck, shareReplay } from 'rxjs/operators';
-import { StateConfig } from './models';
+import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { STORE_TOKEN } from './store.token';
 
 @Injectable()
 export class StoreService<StateKeys extends string> {
-  private state$ = new BehaviorSubject<{ [key in StateKeys]?: any }>({});
-  private actions: { [key: string]: any } = {};
+  private _state = new BehaviorSubject<{ [key: string]: any}>({});
+  private _actions: {[key: string]: Map<string, (state: any, data?: any) => any>} = {};
 
-  constructor(@Inject(STORE_TOKEN) private config: StateConfig<StateKeys>[]) {
-    this.config.forEach(({ name, actions }) => this.add({ name, actions }));
+  constructor(@Inject(STORE_TOKEN) private config) {
+    this.config.forEach(({name, actions}) => {
+
+      this._actions[name] = actions;
+      this.dispatch(name)('@INIT');
+    })
   }
 
-  private set state(value) {
-    this.state$.next(value);
-  }
-
-  private dispatch(stateKey: StateKeys) {
+  private dispatch(key) {
     return (action, data?) => {
-      const actionFn = this.actions[stateKey](this)[action];
-      this.state$.value[stateKey] = actionFn(this.state$.value[stateKey], data);
-      this.state$.next(this.state$.value);
+      if (!this._actions[key]) return;
+      
+      const actionFn = this._actions[key].get(action);
+      this._state.next({
+        ...this._state.value,
+        [key]: actionFn(this._state.value[key], data)
+      })
     };
   }
 
-  private getValue(key: StateKeys) {
-    return () => this.state$.value[key];
-  }
-
-  private pluck(key) {
-    return this.state$.pipe(pluck(key), distinctUntilChanged());
-  }
-
-  private omit(key: StateKeys) {
-    return () => {
-      if (!this.actions[key]) return;
-
-      const { [key]: omittedV, ...propsV } = this.state$.value;
-      const { [key]: omittedA, ...propsA } = this.actions;
-
-      this.actions = { ...propsA };
-      this.state = { ...propsV };
-    };
-  }
-
-  add({ name, actions }: StateConfig<StateKeys>) {
-    if (!this.actions[name]) {
-      this.actions[name] = actions;
-      this.dispatch(name)('INIT');
-    }
-
+  use(key) {
     return {
-      ...this.use(name),
-      omit: this.omit(name)
-    };
-  }
-
-  use(key: StateKeys) {
-    return {
-      observable: this.pluck(key),
+      observable: this._state.pipe(pluck(key), distinctUntilChanged()),
       dispatch: this.dispatch(key),
-      getValue: this.getValue(key)
+      getValue: () => this._state.value[key]
     };
   }
 }

@@ -1,15 +1,16 @@
 import { StateConfig, AppStateKeys } from 'src/app/core/store/models';
 import { Counter } from '../models/counter.type';
 
-export type CounterActions = 'INIT' | 'INC' | 'DEC' | 'SET';
+export type CounterActions = '@INIT' | 'INC' | 'DEC' | 'SET';
 
+const actions = new Map();
 
-export const COUNTER_STATE_CONFIG: StateConfig<AppStateKeys, Counter> = {
+actions.set('@INIT', () => 0);
+actions.set('INC', state => ++state);
+actions.set('DEC', state => --state);
+actions.set('SET', (state, value) => value);
+
+export const COUNTER_STATE_CONFIG = {
   name: 'counter',
-  actions: (store) => ({
-    INIT: () => 0,
-    INC: state => ++state,
-    DEC: state => --state,
-    SET: (state, value) => value
-  })
+  actions
 };

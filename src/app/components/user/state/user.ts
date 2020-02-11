@@ -1,27 +1,15 @@
 import { AppStateKeys, StateConfig } from 'src/app/core/store/models';
 import { User } from '../models/user.interface';
 
-export type UserActions = 'INIT' | 'UPPERCASE' | 'LOWERCASE';
+export type UserActions = '@INIT' | 'UPPERCASE' | 'LOWERCASE' | '@DESTROY';
 
-// export const USER_STATE_CONFIG: StateConfig<AppStateKeys, User, UserActions> = {
-//   name: 'user',
-//   actions: {
-//     INIT: () => ({ name: 'andrey' }),
-//     UPPERCASE: state => ({ name: state.name.toUpperCase() }),
-//     LOWERCASE: state => ({ name: state.name.toLowerCase() })
-//   }
-// };
+const actions: Map<string, (state?:any, data?: any) => any> = new Map();
 
+actions.set('@INIT', () => ({ name: 'andrey' }))
+actions.set('UPPERCASE', state => ({ name: state.name.toUpperCase() }));
+actions.set('LOWERCASE', state => ({ name: state.name.toLowerCase() }));
 
 export const USER_STATE_CONFIG = {
   name: 'user',
-  actions: (store) => ({
-    INIT: () => ({ name: 'andrey' }),
-    UPPERCASE: state => {
-      store.use('counter').dispatch('INC');
-      store.use('counter').dispatch('SET', 10);
-      return { name: state.name.toUpperCase() }
-    },
-    LOWERCASE: state => ({ name: state.name.toLowerCase() })
-  })
+  actions
 }
