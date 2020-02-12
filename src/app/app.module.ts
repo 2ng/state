@@ -5,18 +5,20 @@ import { CounterComponent } from './components/counter/counter.component';
 import { COUNTER_STATE_CONFIG } from './components/counter/state/counter';
 import { USER_STATE_CONFIG } from './components/user/state/user';
 import { UserComponent } from './components/user/user.component';
-import { Store } from './core/store/store.service';
-import { STORE_TOKEN } from './core/store/store.token';
 import { TEMP_STATE_CONFIG } from './components/user/state/temp';
+import { STORE_TOKEN } from './service/store.token';
 
 @NgModule({
   declarations: [AppComponent, CounterComponent, UserComponent],
   imports: [BrowserModule],
   providers: [
-    Store,
     {
       provide: STORE_TOKEN,
-      useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG, TEMP_STATE_CONFIG]
+      useValue: [
+        COUNTER_STATE_CONFIG, 
+        USER_STATE_CONFIG, 
+        TEMP_STATE_CONFIG
+      ]
     }
   ],
   bootstrap: [AppComponent]

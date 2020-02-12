@@ -1,8 +1,7 @@
-import { StateConfig, AppStateKeys } from 'src/app/core/store/models';
-import { Counter } from '../models/counter.type';
-import { undoable } from 'src/app/core/modules/undoable';
-import { keeper } from 'src/app/core/modules/keeper';
-import { logger } from 'src/app/core/modules/logger';
+import { undoable } from 'src/app/service/plugins/undoable';
+import { keeper } from 'src/app/service/plugins/keeper';
+import { logger } from 'src/app/service/plugins/logger';
+import { StateConfig } from 'src/app/service/models';
 
 export type CounterActions = '@INIT' | '@UNDO' | '@REDO' | 'INC' | 'DEC' | 'SET';
 
@@ -13,8 +12,8 @@ actions.set('INC', state => ++state);
 actions.set('DEC', state => --state);
 actions.set('SET', (state, value) => value);
 
-export const COUNTER_STATE_CONFIG = {
+export const COUNTER_STATE_CONFIG: StateConfig = {
   name: 'counter',
   actions,
-  modules: [undoable(), keeper(), logger()]
+  plugins: [undoable(), keeper(), logger()]
 };

@@ -1,7 +1,6 @@
-import { AppStateKeys, StateConfig } from 'src/app/core/store/models';
-import { User } from '../models/user.interface';
-import { keeper } from 'src/app/core/modules/keeper';
-import { logger } from 'src/app/core/modules/logger';
+import { keeper } from 'src/app/service/plugins/keeper';
+import { logger } from 'src/app/service/plugins/logger';
+import { StateConfig } from 'src/app/service/models';
 
 export type UserActions = '@INIT' | 'UPPERCASE' | 'LOWERCASE' | '@DESTROY';
 
@@ -11,8 +10,8 @@ actions.set('@INIT', () => ({ name: 'andrey' }))
 actions.set('UPPERCASE', state => ({ name: state.name.toUpperCase() }));
 actions.set('LOWERCASE', state => ({ name: state.name.toLowerCase() }));
 
-export const USER_STATE_CONFIG = {
+export const USER_STATE_CONFIG: StateConfig = {
   name: 'user',
   actions,
-  modules: [keeper(), logger()]
+  plugins: [keeper(), logger()]
 }

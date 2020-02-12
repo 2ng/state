@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AppStateKeys, DispatchFunction } from 'src/app/core/store/models';
-import { Store } from 'src/app/core/store/store.service';
-import { Counter } from './models/counter.type';
-import { CounterActions } from './state/counter';
-import { UseState } from 'src/app/core/decorators/use-state';
+import { UseState } from 'src/app/service/decorators/use-state';
 
 @Component({
   selector: 'counter',

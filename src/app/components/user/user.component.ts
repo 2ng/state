@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import { Store } from 'src/app/core/store/store.service';
-import "reflect-metadata";
-import { Temp } from './state/temp';
-import { User } from './models/user.interface';
-import { Counter } from '../counter/models/counter.type';
-import { UseState } from 'src/app/core/decorators/use-state';
+import { UseState } from 'src/app/service/decorators/use-state';
 
 @Component({
   selector: 'user',

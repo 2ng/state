@@ -1,10 +1,10 @@
-import { Component } from "@angular/core";
-import { Store } from './core/store/store.service';
+import { Component } from "@angular/core"
+import { StoreService } from './service/store.service';
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html"
 })
 export class AppComponent {
-  constructor(store: Store) {}
+  constructor(store: StoreService) {}
 }
