@@ -1,12 +1,10 @@
 export const undoable = (config?) => {
-    return function(actions: Map<string, (state: any, data?: any) => any>){
+    return function(name, actions: Map<string, (state: any, data?: any) => any>){
   
       actions.forEach((actionFn, action) => {
-        const original = actionFn;
-        
         actions.set(action, (state, data?) => {
           if (!state) state = {past: [], present: null, future: []}
-          const newState = original(state.present, data);
+          const newState = actionFn(state.present, data);
   
           return {
             past: [...state.past, state.present],

@@ -1,27 +1,19 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AppStateKeys, DispatchFunction } from 'src/app/core/store/models';
 import { StoreService } from 'src/app/core/store/store.service';
-import { CounterActions } from '../counter/state/counter';
-import { User } from './models/user.interface';
-import { UserActions } from './state/user';
 
 @Component({
   selector: 'user',
   templateUrl: './user.component.html'
 })
 export class UserComponent {
-  user$: Observable<User>;
-  dispatch: DispatchFunction<UserActions>;
-  dispatchCounter: DispatchFunction<CounterActions>;
+  private _userState = this._store.use('user');
+  user$ = this._userState.observable;
+  dispatch = this._userState.dispatch;
+  
+  private _counterState = this._store.use('counter');
+  dispatchCounter = this._counterState.dispatch;
 
-  constructor(private _storeService: StoreService<AppStateKeys>) {
-    const { dispatch, observable } = this._storeService.use('user');
-    this.user$ = observable;
-    this.dispatch = dispatch;
-
-    this.dispatchCounter = this._storeService.use('counter').dispatch;
-  }
+  constructor(private _store: StoreService) {}
 
   uppercase() {
     this.dispatch('UPPERCASE');

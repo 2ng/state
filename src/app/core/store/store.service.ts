@@ -2,22 +2,23 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { STORE_TOKEN } from './store.token';
+import { AppStateKeys } from './models';
 
 @Injectable()
-export class StoreService<StateKeys extends string> {
+export class StoreService {
   private _state = new BehaviorSubject<{ [key: string]: any}>({});
   private _actions: {[key: string]: Map<string, (state: any, data?: any) => any>} = {};
 
   constructor(@Inject(STORE_TOKEN) private config) {
     this.config.forEach(({name, actions, modules}) => {
-      if (modules) modules.forEach(m => m(actions));
+      if (modules) modules.forEach(m => m(name, actions));
 
       this._actions[name] = actions;
       this.dispatch(name)('@INIT');
     })
   }
 
-  private dispatch(key) {
+  private dispatch(key: AppStateKeys) {
     return (action, data?) => {
       if (!this._actions[key]) return;
       
@@ -29,7 +30,7 @@ export class StoreService<StateKeys extends string> {
     };
   }
 
-  use(key) {
+  use(key: AppStateKeys) {
     return {
       observable: this._state.pipe(pluck(key), distinctUntilChanged()),
       dispatch: this.dispatch(key),
