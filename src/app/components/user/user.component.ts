@@ -12,8 +12,15 @@ export class UserComponent {
   
   private _counterState = this._store.use('counter');
   dispatchCounter = this._counterState.dispatch;
+  
+  private _tempState = this._store.use('temp');
+  dispatchTemp = this._tempState.dispatch;
+  temp$ = this._tempState.observable;
 
-  constructor(private _store: StoreService) {}
+  constructor(private _store: StoreService) {
+    setTimeout(() => this.addTempState(), 3000)
+    setTimeout(() => this.removeTempState(), 6000)
+  }
 
   uppercase() {
     this.dispatch('UPPERCASE');
@@ -25,5 +32,13 @@ export class UserComponent {
 
   increment() {
     this.dispatchCounter('INC');
+  }
+
+  addTempState() {
+    this.dispatchTemp('@LAZY_INIT')
+  }
+
+  removeTempState() {
+    this.dispatchTemp('@DESTROY')
   }
 }

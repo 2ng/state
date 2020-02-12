@@ -1,4 +1,5 @@
 import { AppStateKeys, StateConfig } from 'src/app/core/store/models';
+import { logger } from 'src/app/core/modules/logger';
 
 export interface Temp {
   temp: string;
@@ -6,9 +7,12 @@ export interface Temp {
 
 const actions = new Map();
 
-actions.set('@INIT', () => ({ temp: 'init temp' }));
+actions.set('@LAZY_INIT', () => ({temp : 'init temp' }));
+actions.set('@DESTROY', () => null);
 
-export const temp = {
+export const TEMP_STATE_CONFIG = {
   name: 'temp',
-  actions
+  actions,
+  modules: [logger()]
 };
+

@@ -13,7 +13,7 @@ export class CounterComponent {
   counter$: Observable<Counter>;
   dispatch: DispatchFunction<CounterActions>;
 
-  constructor(private _store: StoreService<AppStateKeys>) {
+  constructor(private _store: StoreService) {
     const { observable, dispatch } = this._store.use('counter');
     this.counter$ = observable;
     this.dispatch = dispatch;

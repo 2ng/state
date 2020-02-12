@@ -7,6 +7,7 @@ import { USER_STATE_CONFIG } from './components/user/state/user';
 import { UserComponent } from './components/user/user.component';
 import { StoreService } from './core/store/store.service';
 import { STORE_TOKEN } from './core/store/store.token';
+import { TEMP_STATE_CONFIG } from './components/user/state/temp';
 
 @NgModule({
   declarations: [AppComponent, CounterComponent, UserComponent],
@@ -15,7 +16,7 @@ import { STORE_TOKEN } from './core/store/store.token';
     StoreService,
     {
       provide: STORE_TOKEN,
-      useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG]
+      useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG, TEMP_STATE_CONFIG]
     }
   ],
   bootstrap: [AppComponent]

@@ -20,13 +20,15 @@ export class StoreService {
 
   private dispatch(key: AppStateKeys) {
     return (action, data?) => {
-      if (!this._actions[key]) return;
-      
       const actionFn = this._actions[key].get(action);
-      this._state.next({
-        ...this._state.value,
-        [key]: actionFn(this._state.value[key], data)
-      })
+      const result = actionFn(this._state.value[key], data);
+      const { [key]: k, ...stateWOcurrentKey } = this._state.value;
+
+      this._state.next(
+        action !== '@DESTROY' ? 
+          { ...stateWOcurrentKey, [key]: result } : 
+          { ...stateWOcurrentKey }
+        )
     };
   }
 
