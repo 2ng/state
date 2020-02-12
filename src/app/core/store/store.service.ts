@@ -12,9 +12,9 @@ export class StoreService {
   constructor(@Inject(STORE_TOKEN) private config) {
     this.config.forEach(({name, actions, modules}) => {
       if (modules) modules.forEach(m => m(name, actions));
-
       this._actions[name] = actions;
-      this.dispatch(name)('@INIT');
+
+      if(actions.has('@INIT')) this.dispatch(name)('@INIT');
     })
   }
 
