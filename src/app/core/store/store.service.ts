@@ -4,27 +4,29 @@ import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { STORE_TOKEN } from './store.token';
 import { AppStateKeys } from './models';
 
-@Injectable()
-export class StoreService {
-  private _state = new BehaviorSubject<{ [key: string]: any}>({});
-  private _actions: {[key: string]: Map<string, (state: any, data?: any) => any>} = {};
+@Injectable({
+  providedIn: 'root'
+})
+export class Store {
+  static _state = new BehaviorSubject<{ [key: string]: any}>({});
+  static _actions: {[key: string]: Map<string, (state: any, data?: any) => any>} = {};
 
   constructor(@Inject(STORE_TOKEN) private config) {
     this.config.forEach(({name, actions, modules}) => {
       if (modules) modules.forEach(m => m(name, actions));
-      this._actions[name] = actions;
+      Store._actions[name] = actions;
 
-      if(actions.has('@INIT')) this.dispatch(name)('@INIT');
+      if(actions.has('@INIT')) Store.dispatch(name)('@INIT');
     })
   }
 
-  private dispatch(key: AppStateKeys) {
+  static dispatch(key: AppStateKeys) {
     return (action, data?) => {
-      const actionFn = this._actions[key].get(action);
-      const result = actionFn(this._state.value[key], data);
-      const { [key]: k, ...stateWOcurrentKey } = this._state.value;
+      const actionFn = Store._actions[key].get(action);
+      const result = actionFn(Store._state.value[key], data);
+      const { [key]: k, ...stateWOcurrentKey } = Store._state.value;
 
-      this._state.next(
+      Store._state.next(
         action !== '@DESTROY' ? 
           { ...stateWOcurrentKey, [key]: result } : 
           { ...stateWOcurrentKey }
@@ -32,11 +34,11 @@ export class StoreService {
     };
   }
 
-  use(key: AppStateKeys) {
+  static use(key: AppStateKeys) {
     return {
-      observable: this._state.pipe(pluck(key), distinctUntilChanged()),
-      dispatch: this.dispatch(key),
-      getValue: () => this._state.value[key]
+      observable: Store._state.pipe(pluck(key), distinctUntilChanged()),
+      dispatch: Store.dispatch(key),
+      getValue: () => Store._state.value[key]
     };
   }
 }

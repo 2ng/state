@@ -5,7 +5,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import { COUNTER_STATE_CONFIG } from './components/counter/state/counter';
 import { USER_STATE_CONFIG } from './components/user/state/user';
 import { UserComponent } from './components/user/user.component';
-import { StoreService } from './core/store/store.service';
+import { Store } from './core/store/store.service';
 import { STORE_TOKEN } from './core/store/store.token';
 import { TEMP_STATE_CONFIG } from './components/user/state/temp';
 
@@ -13,7 +13,7 @@ import { TEMP_STATE_CONFIG } from './components/user/state/temp';
   declarations: [AppComponent, CounterComponent, UserComponent],
   imports: [BrowserModule],
   providers: [
-    StoreService,
+    Store,
     {
       provide: STORE_TOKEN,
       useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG, TEMP_STATE_CONFIG]

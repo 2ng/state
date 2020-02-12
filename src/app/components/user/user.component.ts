@@ -1,44 +1,37 @@
 import { Component } from '@angular/core';
-import { StoreService } from 'src/app/core/store/store.service';
+import { Store } from 'src/app/core/store/store.service';
+import "reflect-metadata";
+import { Temp } from './state/temp';
+import { User } from './models/user.interface';
+import { Counter } from '../counter/models/counter.type';
+import { UseState } from 'src/app/core/decorators/use-state';
 
 @Component({
   selector: 'user',
   templateUrl: './user.component.html'
 })
 export class UserComponent {
-  private _userState = this._store.use('user');
-  user$ = this._userState.observable;
-  dispatch = this._userState.dispatch;
-  
-  private _counterState = this._store.use('counter');
-  dispatchCounter = this._counterState.dispatch;
-  
-  private _tempState = this._store.use('temp');
-  dispatchTemp = this._tempState.dispatch;
-  temp$ = this._tempState.observable;
-
-  constructor(private _store: StoreService) {
-    setTimeout(() => this.addTempState(), 3000)
-    setTimeout(() => this.removeTempState(), 6000)
-  }
+  @UseState('temp') temp;
+  @UseState('user') user;
+  @UseState('counter') counter;
 
   uppercase() {
-    this.dispatch('UPPERCASE');
+    this.user.dispatch('UPPERCASE');
   }
 
   lowercase() {
-    this.dispatch('LOWERCASE');
+    this.user.dispatch('LOWERCASE');
   }
 
   increment() {
-    this.dispatchCounter('INC');
+    this.counter.dispatch('INC');
   }
 
   addTempState() {
-    this.dispatchTemp('@LAZY_INIT')
+    this.temp.dispatch('@LAZY_INIT')
   }
 
   removeTempState() {
-    this.dispatchTemp('@DESTROY')
+    this.temp.dispatch('@DESTROY')
   }
 }
