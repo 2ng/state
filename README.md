@@ -1,4 +1,4 @@
-# @costore/ng-store
+# 🔥 @costore/ng-store
 
 An ordinary state manager.
 
