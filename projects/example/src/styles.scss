@@ -1,3 +1,19 @@
+:root {
+  --primary-color: #fff;
+  --background-color: #e2e2e2;
+  --text-color: #2d2d2d;
+  --counter-color: lightblue;
+  --user-color: lightgrey;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Lato;
+  padding: 0;
+  margin: 0;
+}
+
 .block {
   display: flex;
   flex-direction: column;
@@ -11,12 +27,17 @@
     border: 0;
   }
 
+  button.active {
+    background-color: lightcoral;
+    color: white;
+  }
+
   &.counter {
-    background-color: lightblue;
+    background-color: var(--counter-color);
   }
 
   &.user {
-    background-color: lightgrey;
+    background-color: var(--user-color);
   }
 
   & .add-button {
@@ -38,8 +59,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-
     margin-bottom: 20px;
+    color: black;
 
     button {
       width: 50px;

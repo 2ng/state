@@ -7,14 +7,16 @@ import { USER_STATE_CONFIG } from './components/user/state/user';
 import { UserComponent } from './components/user/user.component';
 import { TEMP_STATE_CONFIG } from './components/user/state/temp';
 import { STORE_TOKEN, StoreService } from 'projects/ng-store/src/public-api';
+import { THEME_STATE_CONFIG } from './services/theme/state';
+import { ThemeTogglerComponent } from './components/theme-toggler/theme-toggler.component';
 
 @NgModule({
-  declarations: [AppComponent, CounterComponent, UserComponent],
+  declarations: [AppComponent, CounterComponent, UserComponent, ThemeTogglerComponent],
   imports: [BrowserModule],
   providers: [
     {
       provide: STORE_TOKEN,
-      useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG, TEMP_STATE_CONFIG]
+      useValue: [COUNTER_STATE_CONFIG, USER_STATE_CONFIG, TEMP_STATE_CONFIG, THEME_STATE_CONFIG]
     }
   ],
   bootstrap: [AppComponent]
