@@ -1,0 +1,14 @@
+export declare type DispatchFunction<Actions> = (key: Actions, data?: any) => void;
+export declare type AppStateKeys = 'counter' | 'user' | 'temp';
+export declare type DefaultActions = '@INIT' | ('@DESTROY' & string);
+declare type ActionsMap = Map<string, (state: any, data?: any) => any>;
+export declare type Actions = {
+    [key: string]: ActionsMap;
+};
+declare type Plugin = (name: string, actions: ActionsMap) => void;
+export interface StateConfig {
+    name: string;
+    actions: ActionsMap;
+    plugins: Plugin[];
+}
+export {};

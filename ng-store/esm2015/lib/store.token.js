@@ -1,0 +1,9 @@
+/**
+ * @fileoverview added by tsickle
+ * Generated from: lib/store.token.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+import { InjectionToken } from '@angular/core';
+/** @type {?} */
+export const STORE_TOKEN = new InjectionToken('STORE_TOKEN');
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3RvcmUudG9rZW4uanMiLCJzb3VyY2VSb290Ijoibmc6Ly9AY29zdG9yZS9uZy1zdG9yZS8iLCJzb3VyY2VzIjpbImxpYi9zdG9yZS50b2tlbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztBQUFBLE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSxlQUFlLENBQUM7O0FBRy9DLE1BQU0sT0FBTyxXQUFXLEdBQUcsSUFBSSxjQUFjLENBQWdCLGFBQWEsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEluamVjdGlvblRva2VuIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XHJcbmltcG9ydCB7IFN0YXRlQ29uZmlnIH0gZnJvbSAnLi9tb2RlbHMnO1xyXG5cclxuZXhwb3J0IGNvbnN0IFNUT1JFX1RPS0VOID0gbmV3IEluamVjdGlvblRva2VuPFN0YXRlQ29uZmlnW10+KCdTVE9SRV9UT0tFTicpO1xyXG4iXX0=

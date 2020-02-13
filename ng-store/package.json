@@ -1,0 +1,21 @@
+{
+  "name": "@costore/ng-store",
+  "version": "0.0.2",
+  "peerDependencies": {
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14"
+  },
+  "main": "bundles/costore-ng-store.umd.js",
+  "module": "fesm5/costore-ng-store.js",
+  "es2015": "fesm2015/costore-ng-store.js",
+  "esm5": "esm5/costore-ng-store.js",
+  "esm2015": "esm2015/costore-ng-store.js",
+  "fesm5": "fesm5/costore-ng-store.js",
+  "fesm2015": "fesm2015/costore-ng-store.js",
+  "typings": "costore-ng-store.d.ts",
+  "metadata": "costore-ng-store.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}
