@@ -10,4 +10,5 @@ npm i @costore/ng-store
 ## Example
 ```
 ng serve --project example
+ng build --project example --prod
 ```

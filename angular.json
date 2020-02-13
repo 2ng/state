@@ -65,6 +65,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/ng-store/",
               "fileReplacements": [
                 {
                   "replace": "projects/example/src/environments/environment.ts",
