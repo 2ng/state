@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UseState } from 'src/app/service/decorators/use-state';
+import { UseState } from 'src/app/services/store/decorators/use-state';
 
 @Component({
   selector: 'user',

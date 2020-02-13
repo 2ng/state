@@ -1,6 +1,6 @@
-import { keeper } from 'src/app/service/plugins/keeper';
-import { logger } from 'src/app/service/plugins/logger';
-import { StateConfig } from 'src/app/service/models';
+import { keeper } from 'src/app/services/store/plugins/keeper';
+import { logger } from 'src/app/services/store/plugins/logger';
+import { StateConfig } from 'src/app/services/store/models';
 
 export type UserActions = '@INIT' | 'UPPERCASE' | 'LOWERCASE' | '@DESTROY';
 

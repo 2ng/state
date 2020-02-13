@@ -1,7 +1,7 @@
-import { undoable } from 'src/app/service/plugins/undoable';
-import { keeper } from 'src/app/service/plugins/keeper';
-import { logger } from 'src/app/service/plugins/logger';
-import { StateConfig } from 'src/app/service/models';
+import { undoable } from 'src/app/services/store/plugins/undoable';
+import { keeper } from 'src/app/services/store/plugins/keeper';
+import { logger } from 'src/app/services/store/plugins/logger';
+import { StateConfig } from 'src/app/services/store/models';
 
 export type CounterActions = '@INIT' | '@UNDO' | '@REDO' | 'INC' | 'DEC' | 'SET';
 

@@ -1,5 +1,5 @@
-import { logger } from 'src/app/service/plugins/logger';
-import { StateConfig } from 'src/app/service/models';
+import { logger } from 'src/app/services/store/plugins/logger';
+import { StateConfig } from 'src/app/services/store/models';
 
 export interface Temp {
   temp: string;

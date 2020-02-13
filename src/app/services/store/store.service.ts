@@ -18,17 +18,13 @@ export class StoreService {
     StoreService._stateSubject = new BehaviorSubject(StoreService._store.state);
   }
 
-  private static dispatch(key: string) {
-    return (action, data?) => {
-      this._store.dispatch(key, action, data);
-      this._stateSubject.next(this._store.state);
-    };
-  }
-
   public static use(key: string) {
     return {
       observable: this._stateSubject.pipe(pluck(key), distinctUntilChanged()),
-      dispatch: this.dispatch(key),
+      dispatch: (action, data?) => {
+        this._store.dispatch(key, action, data);
+        this._stateSubject.next(this._store.state);
+      },
       getValue: () => this._stateSubject.value[key]
     };
   }

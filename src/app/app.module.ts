@@ -6,8 +6,8 @@ import { COUNTER_STATE_CONFIG } from './components/counter/state/counter';
 import { USER_STATE_CONFIG } from './components/user/state/user';
 import { UserComponent } from './components/user/user.component';
 import { TEMP_STATE_CONFIG } from './components/user/state/temp';
-import { STORE_TOKEN } from './service/store.token';
-import { StoreService } from './service/store.service';
+import { STORE_TOKEN } from './services/store/store.token';
+import { StoreService } from './services/store/store.service';
 
 @NgModule({
   declarations: [AppComponent, CounterComponent, UserComponent],
