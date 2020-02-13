@@ -1,10 +1,10 @@
 <div class="block counter">
   <div class="button-group">
     <button (click)="decrement()">-</button>
-    {{ (counter.observable | async).present}}
+    {{ (counter.observable | async).present }}
     <button (click)="increment()">+</button>
 
-    <button (click)="undo()" [disabled]="(counter.observable| async).past.length - 1 === 0">undo</button>
+    <button (click)="undo()" [disabled]="(counter.observable | async).past.length - 1 === 0">undo</button>
     <button (click)="redo()" [disabled]="(counter.observable | async).future.length === 0">redo</button>
   </div>
 

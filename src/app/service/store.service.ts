@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { distinctUntilChanged, pluck } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { pluck } from 'rxjs/internal/operators/pluck';
 import { STORE_TOKEN } from './store.token';
-import { AppStateKeys, StateConfig } from './models';
+import { StateConfig } from './models';
 import { Store } from './core/store';
 
 @Injectable({
@@ -10,9 +11,9 @@ import { Store } from './core/store';
 })
 export class StoreService {
   private static _store: Store;
-  private static _stateSubject: BehaviorSubject<{[key: string]: any}>;
+  private static _stateSubject: BehaviorSubject<{ [key: string]: any }>;
 
-  constructor(@Inject(STORE_TOKEN) public config: StateConfig[]) {
+  constructor(@Inject(STORE_TOKEN) private config: StateConfig[]) {
     StoreService._store = new Store(this.config);
     StoreService._stateSubject = new BehaviorSubject(StoreService._store.state);
   }
@@ -20,7 +21,7 @@ export class StoreService {
   private static dispatch(key: string) {
     return (action, data?) => {
       this._store.dispatch(key, action, data);
-      this._stateSubject.next(this._store.state)
+      this._stateSubject.next(this._store.state);
     };
   }
 

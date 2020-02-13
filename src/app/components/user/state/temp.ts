@@ -7,7 +7,7 @@ export interface Temp {
 
 const actions = new Map();
 
-actions.set('@LAZY_INIT', () => ({temp : 'init temp' }));
+actions.set('@LAZY_INIT', () => ({ temp: 'init temp' }));
 actions.set('@DESTROY', () => null);
 
 export const TEMP_STATE_CONFIG: StateConfig = {
@@ -15,4 +15,3 @@ export const TEMP_STATE_CONFIG: StateConfig = {
   actions,
   plugins: [logger()]
 };
-

@@ -23,10 +23,10 @@ export class UserComponent {
   }
 
   addTempState() {
-    this.temp.dispatch('@LAZY_INIT')
+    this.temp.dispatch('@LAZY_INIT');
   }
 
   removeTempState() {
-    this.temp.dispatch('@DESTROY')
+    this.temp.dispatch('@DESTROY');
   }
 }
