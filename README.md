@@ -4,7 +4,7 @@ An ordinary state manager.
 
 ## Install
 ```
-npm i ng-store
+npm i @ng-store/ng-store
 ```
 
 ## Example
