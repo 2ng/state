@@ -1,4 +1,4 @@
-# ng-store
+# @ng-store/ng-store
 
 An ordinary state manager.
 

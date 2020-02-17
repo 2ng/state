@@ -1,5 +1,5 @@
 {
-  "name": "ng-store",
+  "name": "@ng-store/ng-store",
   "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
