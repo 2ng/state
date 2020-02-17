@@ -32,6 +32,8 @@ MIT
 @angular/platform-browser
 MIT
 
+@ng-store/ng-store
+
 core-js
 MIT
 Copyright (c) 2014-2020 Denis Pushkarev
@@ -56,8 +58,6 @@ THE SOFTWARE.
 
 
 lib
-
-ng-store
 
 regenerator-runtime
 MIT
