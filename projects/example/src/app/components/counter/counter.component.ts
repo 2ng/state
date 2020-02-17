@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
-import { UseState } from 'projects/ng-store/src/public-api';
+import { Use } from 'projects/ng-store/src/lib/models';
+import { NgStoreService } from 'projects/ng-store/src/public-api';
+import { AppState } from '../../appState.interface';
+import { CounterActions } from './store/models/counter-actions.type';
+import { Counter } from './store/models/counter.type';
+
 
 @Component({
   selector: 'counter',
   templateUrl: './counter.component.html'
 })
 export class CounterComponent {
-  @UseState('counter') counter;
+  counter: Use<Counter, CounterActions> = this._storeService.use('counter');
+
+  constructor(private _storeService: NgStoreService<AppState>) {
+    this.counter.dispatch('@INIT');
+  }
 
   increment() {
     this.counter.dispatch('INC');
@@ -28,7 +37,7 @@ export class CounterComponent {
     this.counter.dispatch('@INIT');
   }
 
-  set(value) {
+  set(value: number) {
     this.counter.dispatch('SET', value);
   }
 }

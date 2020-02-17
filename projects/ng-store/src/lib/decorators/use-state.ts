@@ -1,11 +1,10 @@
-import { StoreService } from '../store.service';
-
-export function UseState(stateName: string) {
-  return function(target: any, propKey: string): void {
+export function UseState<N extends string = string>(stateName: N) {
+  return function(target: any, propKey: N): void {
+    
     Object.defineProperties(target, {
       [propKey]: {
         get() {
-          return StoreService.use(stateName);
+          return this._storeService.use(stateName);
         }
       }
     });

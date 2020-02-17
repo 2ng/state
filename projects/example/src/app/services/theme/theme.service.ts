@@ -1,13 +1,18 @@
-import { Injectable } from "@angular/core";
-import { UseState } from 'projects/ng-store/src/public-api';
-import { LIGHT_THEME, DARK_THEME } from './config';
+import { Injectable } from '@angular/core';
+import { Use } from 'projects/ng-store/src/lib/models';
+import { NgStoreService } from 'projects/ng-store/src/public-api';
+import { AppState } from '../../appState.interface';
+import { DARK_THEME, LIGHT_THEME } from './config';
+import { ThemeActions } from './store/models/theme-actions.type';
+import { Theme } from './store/models/theme.type';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
-  @UseState('theme') theme;
-  
-  constructor() {
-    this.theme.observable.subscribe(name => this.setTheme(name))
+  theme: Use<Theme, ThemeActions> = this._storeService.use('theme');
+
+  constructor(private _storeService: NgStoreService<AppState>) {
+    this.theme.dispatch('@INIT');
+    this.theme.changes.subscribe(name => this.setTheme(name));
   }
 
   toggle(name) {
@@ -16,7 +21,10 @@ export class ThemeService {
 
   private setTheme(name) {
     const theme = name === 'light' ? LIGHT_THEME : name === 'dark' ? DARK_THEME : null;
-    
-    Object.keys(theme).forEach(k => document.documentElement.style.setProperty(`--${k}`, theme[k]));
+    if (!theme) throw new Error(`Theme with name: '${name}' is undefined`);
+
+    for (const key of Object.keys(theme)) {
+      document.documentElement.style.setProperty(`--${key}`, theme[key]);
+    }
   }
 }

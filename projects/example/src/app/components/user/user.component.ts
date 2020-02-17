@@ -1,14 +1,23 @@
 import { Component } from '@angular/core';
-import { UseState } from 'projects/ng-store/src/public-api';
+import { Use } from 'projects/ng-store/src/lib/models';
+import { NgStoreService } from 'projects/ng-store/src/public-api';
+import { AppState } from '../../appState.interface';
+import { CounterActions } from '../counter/store/models/counter-actions.type';
+import { Counter } from '../counter/store/models/counter.type';
+import { UserActions } from './store/models/user-actions.type';
+import { User } from './store/models/user.interface';
 
 @Component({
   selector: 'user',
   templateUrl: './user.component.html'
 })
 export class UserComponent {
-  @UseState('temp') temp;
-  @UseState('user') user;
-  @UseState('counter') counter;
+  user: Use<User, UserActions> = this._storeService.use('user');
+  counter: Use<Counter, CounterActions> = this._storeService.use('counter');
+
+  constructor(private _storeService: NgStoreService<AppState>) {
+    this.user.dispatch('@INIT');
+  }
 
   uppercase() {
     this.user.dispatch('UPPERCASE');
@@ -20,13 +29,5 @@ export class UserComponent {
 
   increment() {
     this.counter.dispatch('INC');
-  }
-
-  addTempState() {
-    this.temp.dispatch('@LAZY_INIT');
-  }
-
-  removeTempState() {
-    this.temp.dispatch('@DESTROY');
   }
 }

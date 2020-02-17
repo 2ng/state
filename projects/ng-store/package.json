@@ -1,6 +1,6 @@
 {
-  "name": "@costore/ng-store",
-  "version": "0.0.2",
+  "name": "ng-store",
+  "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"

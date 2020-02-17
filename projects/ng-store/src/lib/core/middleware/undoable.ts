@@ -1,19 +1,26 @@
-export const undoable = (config?) => {
-  return function(name, actions: Map<string, (state: any, data?: any) => any>) {
-    actions.forEach((actionFn, action) => {
-      actions.set(action, (state, data?) => {
+import { Middleware } from "../models";
+
+export default function undoable(config?): Middleware {
+  return store => {
+    const actions = store.getActions();
+
+    for (const action in actions) {
+      const original = actions[action];
+
+      actions[action] = (state, data) => {
         if (!state) state = { past: [], present: null, future: [] };
-        const newState = actionFn(state.present, data);
+        const present = original(state.present, data);
 
         return {
           past: [...state.past, state.present],
-          present: newState,
+          present,
           future: []
         };
-      });
-    });
+      };
+    }
 
-    actions.set('@UNDO', ({ past, present, future }) => {
+    store.on("@UNDO", state => {
+      const { past, present, future } = state;
       if (!past.length) return { past, present, future };
 
       const previous = past[past.length - 1];
@@ -25,7 +32,8 @@ export const undoable = (config?) => {
       };
     });
 
-    actions.set('@REDO', ({ past, present, future }) => {
+    store.on("@REDO", state => {
+      const { past, present, future } = state;
       if (!future.length) return { past, present, future };
 
       const next = future[0];
@@ -36,7 +44,5 @@ export const undoable = (config?) => {
         future: newFuture
       };
     });
-
-    return actions;
   };
-};
+}

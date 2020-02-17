@@ -1,8 +1,7 @@
 <div class="block user">
   <div class="button-group">
     <button (click)="lowercase()">LOW</button>
-    {{ (user.observable | async)?.name }}
-    {{ (temp.observable | async)?.temp }}
+    {{ (user?.changes | async)?.name }}
     <button (click)="uppercase()">UP</button>
   </div>
 

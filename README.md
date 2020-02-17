@@ -1,10 +1,10 @@
-# 🔥 @costore/ng-store
+# ng-store
 
 An ordinary state manager.
 
 ## Install
 ```
-npm i @costore/ng-store
+npm i ng-store
 ```
 
 ## Example
