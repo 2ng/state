@@ -1,7 +1,4 @@
 import { Observable } from "rxjs/internal/Observable";
-import { Store } from "../core/models";
+import Store from "@ng-store/core";
 
-export type Use<T, A extends string> = Omit<
-  Store<T, A>,
-  "name" | "getActions"
-> & { changes: Observable<T> };
+export type Use<T, A extends string> = Store<T, A> & { changes: Observable<T> };
