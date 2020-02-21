@@ -8,11 +8,11 @@ import { Theme } from './store/models/theme.type';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  theme: Use<Theme, ThemeActions> = this._storeService.use('theme');
+  theme: Use<Theme, ThemeActions> = this._storeService.use('themeStore');
 
   constructor(private _storeService: NgStoreService<AppState>) {
     this.theme.dispatch('@INIT');
-    this.theme.changes.subscribe(name => this.setTheme(name));
+    this.theme.changes.subscribe(state => this.setTheme(state.theme));
   }
 
   toggle(name) {
@@ -21,6 +21,7 @@ export class ThemeService {
 
   private setTheme(name) {
     const theme = name === 'light' ? LIGHT_THEME : name === 'dark' ? DARK_THEME : null;
+
     if (!theme) throw new Error(`Theme with name: '${name}' is undefined`);
 
     for (const key of Object.keys(theme)) {

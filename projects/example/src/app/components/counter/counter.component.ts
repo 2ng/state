@@ -11,7 +11,7 @@ import { Counter } from './store/models/counter.type';
   templateUrl: './counter.component.html'
 })
 export class CounterComponent {
-  counter: Use<Counter, CounterActions> = this._storeService.use('counter');
+  counter: Use<Counter, CounterActions> = this._storeService.use('counterStore');
 
   constructor(private _storeService: NgStoreService<AppState>) {
     this.counter.dispatch('@INIT');

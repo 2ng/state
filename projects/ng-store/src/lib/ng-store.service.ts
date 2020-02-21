@@ -8,7 +8,7 @@ import { NG_STORE } from "./ng-store.token";
   providedIn: "root"
 })
 export class NgStoreService<S extends { [key in keyof S]: S[key] }> {
-  private _state = new BehaviorSubject({});
+  private _state = new BehaviorSubject<Partial<S>>({});
 
   constructor(@Inject(NG_STORE) private _stores: any) {} //{ [key in keyof S]: S[key] }
 
@@ -18,9 +18,9 @@ export class NgStoreService<S extends { [key in keyof S]: S[key] }> {
       ...store,
       dispatch: (action: string, data?: any) => {
         store.dispatch(action, data);
-        this._state.next({ ...this._state.value, [key]: store.state });
+        this._state.next({ ...this._state.value, [key]: store.getState() });
       },
-      changes: this._state.pipe(pluck(key as string), distinctUntilChanged())
+      changes: this._state.pipe(pluck(key), distinctUntilChanged())
     };
   }
 }

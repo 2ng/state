@@ -1,1 +1,1 @@
-export type Counter = number;
+export type Counter = { counter: number };

@@ -5,7 +5,7 @@ export const DARK_THEME = {
   'counter-color': 'lightblue',
   'user-color': '#8c8787'
 };
-  
+
 export const LIGHT_THEME = {
   'primary-color': '#fff',
   'background-color': '#e5e5e5',

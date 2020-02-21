@@ -12,11 +12,13 @@ import { User } from './store/models/user.interface';
   templateUrl: './user.component.html'
 })
 export class UserComponent {
-  user: Use<User, UserActions> = this._storeService.use('user');
-  counter: Use<Counter, CounterActions> = this._storeService.use('counter');
+  user: Use<User, UserActions> = this._storeService.use('userStore');
+  counter: Use<Counter, CounterActions> = this._storeService.use('counterStore');
 
   constructor(private _storeService: NgStoreService<AppState>) {
     this.user.dispatch('@INIT');
+
+    this.user.changes.subscribe(u => console.log(u))
   }
 
   uppercase() {

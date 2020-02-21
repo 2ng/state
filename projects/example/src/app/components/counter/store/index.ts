@@ -1,15 +1,9 @@
-import createStore from 'projects/ng-store/src/lib/core';
-import applyMiddleware, { keeper, logger, undoable } from 'projects/ng-store/src/lib/core/middleware';
 import { CounterActions } from './models/counter-actions.type';
 import { Counter } from './models/counter.type';
+import Store from '@ng-store/core';
 
-const counter = createStore<Counter, CounterActions>('counter');
+export const counter = new Store<Counter, CounterActions>({ counter: 0 });
 
-counter.on('@INIT', () => 0);
-counter.on('INC', state => ++state);
-counter.on('DEC', state => --state);
-counter.on('SET', (state, value) => value);
-
-applyMiddleware(counter, [undoable(), keeper(), logger()]);
-export { counter };
-
+counter.on('INC', state => ({ counter: ++state.counter }));
+counter.on('DEC', state => ({ counter: --state.counter }));
+counter.on('SET', (state, value) => ({ counter: value }));

@@ -1,14 +1,8 @@
-import createStore from 'projects/ng-store/src/lib/core';
-import applyMiddleware, { logger } from 'projects/ng-store/src/lib/core/middleware';
 import { UserActions } from './models/user-actions.type';
 import { User } from './models/user.interface';
+import Store from '@ng-store/core';
 
-const user = createStore<User, UserActions>('user');
+export const user = new Store<User, UserActions>({ user: 'andrey' });
 
-user.on('@INIT', () => ({ name: 'andrey' }));
-user.on('UPPERCASE', state => ({ name: state.name.toUpperCase() }));
-user.on('LOWERCASE', state => ({ name: state.name.toLowerCase() }));
-
-applyMiddleware(user, [logger()]);
-
-export { user };
+user.on('UPPERCASE', state => ({ user: state.user.toUpperCase() }));
+user.on('LOWERCASE', state => ({ user: state.user.toLowerCase() }));
