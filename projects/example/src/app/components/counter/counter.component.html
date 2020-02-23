@@ -1,7 +1,7 @@
 <div class="block counter">
   <div class="button-group">
     <button (click)="decrement()">-</button>
-    {{ (counter.changes | async).counter }}
+    {{ (counter.changes | async)?.counter }}
     <button (click)="increment()">+</button>
 
     <!-- <button (click)="undo()" [disabled]="(counter.changes() | async)?.past.length - 1 === 0">undo</button>

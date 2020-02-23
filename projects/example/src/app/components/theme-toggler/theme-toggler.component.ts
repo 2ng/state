@@ -6,13 +6,13 @@ import { ThemeService } from '../../services/theme/theme.service';
   template: `
     <div class="block user">
       <button
-        [class.active]="(themeService.theme.changes | async).theme === 'dark'"
+        [class.active]="(themeService.theme.changes | async)?.theme === 'dark'"
         (click)="themeService.toggle('dark')"
       >
         Dark Theme
       </button>
       <button
-        [class.active]="(themeService.theme.changes | async).theme === 'light'"
+        [class.active]="(themeService.theme.changes | async)?.theme === 'light'"
         (click)="themeService.toggle('light')"
       >
         Light Theme
