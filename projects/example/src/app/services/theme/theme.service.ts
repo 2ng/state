@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Use } from 'projects/ng-store/src/lib/models';
 import { NgStoreService } from 'projects/ng-store/src/public-api';
 import { AppState } from '../../appState.interface';
 import { DARK_THEME, LIGHT_THEME } from './config';
-import { ThemeActions } from './store/models/theme-actions.type';
 import { Theme } from './store/models/theme.type';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  theme: Use<Theme, ThemeActions> = this._storeService.use('themeStore');
+  theme = this._storeService.use('themeStore');
 
   constructor(private _storeService: NgStoreService<AppState>) {
     this.theme.dispatch('@INIT');
-    this.theme.changes.subscribe(state => this.setTheme(state.theme));
+    this.theme.changes.subscribe((state: Theme) => this.setTheme(state.theme));
   }
 
   toggle(name) {

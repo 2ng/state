@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import applyMiddleware, { keeper, logger } from '@ng-store/middleware';
 import { NG_STORE } from 'projects/ng-store/src/public-api';
 import { AppComponent } from './app.component';
 import { CounterComponent } from './components/counter/counter.component';
@@ -8,9 +9,6 @@ import { ThemeTogglerComponent } from './components/theme-toggler/theme-toggler.
 import { user } from './components/user/store';
 import { UserComponent } from './components/user/user.component';
 import { theme } from './services/theme/store';
-import applyMiddleware from '@ng-store/middleware';
-import keeper from '@ng-store/middleware/lib/keeper';
-import logger from '@ng-store/middleware/lib/logger';
 
 const APP_STORE = {
   themeStore: theme,

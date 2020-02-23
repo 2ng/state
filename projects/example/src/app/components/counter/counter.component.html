@@ -4,8 +4,8 @@
     {{ (counter.changes | async).counter }}
     <button (click)="increment()">+</button>
 
-    <!-- <button (click)="undo()" [disabled]="(counter.changes | async)?.past.length - 1 === 0">undo</button>
-    <button (click)="redo()" [disabled]="(counter.changes | async)?.future.length === 0">redo</button> -->
+    <!-- <button (click)="undo()" [disabled]="(counter.changes() | async)?.past.length - 1 === 0">undo</button>
+    <button (click)="redo()" [disabled]="(counter.changes() | async)?.future.length === 0">redo</button> -->
   </div>
 
   <button (click)="reset()">RESET TO INIT</button>
