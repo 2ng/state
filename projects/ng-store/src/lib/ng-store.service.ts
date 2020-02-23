@@ -12,7 +12,7 @@ import { isObjEqual } from "./utils/is-obj-equal";
 export class NgStoreService<S extends { [key in keyof S]: S[key] }> {
   private state$ = new BehaviorSubject({});
 
-  constructor(@Inject(NG_STORE) private _stores: S) {}
+  constructor(@Inject(NG_STORE) private _stores: any) {}
 
   public use(key: keyof S) {
     const store = this._stores[key] as Store;
