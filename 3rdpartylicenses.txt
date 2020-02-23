@@ -32,6 +32,12 @@ MIT
 @angular/platform-browser
 MIT
 
+@ng-store/core
+MIT
+
+@ng-store/middleware
+MIT
+
 @ng-store/ng-store
 
 core-js
