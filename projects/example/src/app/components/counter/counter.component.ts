@@ -1,42 +1,25 @@
 import { Component } from '@angular/core';
-import { Use } from 'projects/ng-store/src/lib/models';
-import { NgStoreService } from 'projects/ng-store/src/public-api';
-import { AppState } from '../../appState.interface';
-import { CounterActions } from './store/models/counter-actions.type';
-import { Counter } from './store/models/counter.type';
+import { CounterStore } from './store/counter.store';
 
 @Component({
-  selector: 'counter',
-  templateUrl: './counter.component.html'
+  selector: 'app-counter',
+  templateUrl: './counter.component.html',
+  providers: [CounterStore]
 })
 export class CounterComponent {
-  counter: Use<Counter | {}, CounterActions> = this._storeService.use('counterStore');
+  counter = this.counterStore.state.changes('counter');
 
-  constructor(private _storeService: NgStoreService<AppState>) {
-    this.counter.dispatch('@INIT');
-  }
+  constructor(private counterStore: CounterStore) {}
 
   increment() {
-    this.counter.dispatch('INC');
+    this.counterStore.increment();
   }
 
   decrement() {
-    this.counter.dispatch('DEC');
+    this.counterStore.decrement();
   }
 
-  undo() {
-    this.counter.dispatch('@UNDO');
-  }
-
-  redo() {
-    this.counter.dispatch('@REDO');
-  }
-
-  reset() {
-    this.counter.dispatch('@INIT');
-  }
-
-  set(value: number) {
-    this.counter.dispatch('SET', value);
+  setValue(value: number) {
+    this.counterStore.setValue(value);
   }
 }

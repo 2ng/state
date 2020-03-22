@@ -1,14 +1,8 @@
-# @ng-store/ng-store
+# @2ng/state
 
 An ordinary state manager.
 
 ## Install
 ```
-npm i @ng-store/ng-store
-```
-
-## Example
-```
-ng serve --project example
-ng build --project example --prod
+npm i @2ng/state
 ```

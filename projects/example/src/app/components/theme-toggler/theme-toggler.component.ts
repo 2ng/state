@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { ThemeService } from '../../services/theme/theme.service';
+import {ThemeStore} from '../../store/theme/theme.store';
 
 @Component({
-  selector: 'theme-toggler',
+  selector: 'app-theme-toggler',
   template: `
     <div class="block user">
       <button
-        [class.active]="(themeService.theme.changes | async)?.theme === 'dark'"
-        (click)="themeService.toggle('dark')"
+        [class.active]="(theme | async) === 'DARK_THEME'"
+        (click)="themeStore.setTheme('DARK_THEME')"
       >
         Dark Theme
       </button>
       <button
-        [class.active]="(themeService.theme.changes | async)?.theme === 'light'"
-        (click)="themeService.toggle('light')"
+        [class.active]="(theme | async) === 'LIGHT_THEME'"
+        (click)="themeStore.setTheme('LIGHT_THEME')"
       >
         Light Theme
       </button>
@@ -21,5 +21,7 @@ import { ThemeService } from '../../services/theme/theme.service';
   `
 })
 export class ThemeTogglerComponent {
-  constructor(public themeService: ThemeService) {}
+  theme = this.themeStore.state.changes('theme');
+
+  constructor(public themeStore: ThemeStore) {}
 }

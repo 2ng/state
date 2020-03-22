@@ -1,32 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import applyMiddleware, { keeper, logger } from '@ng-store/middleware';
-import { NG_STORE } from 'projects/ng-store/src/public-api';
 import { AppComponent } from './app.component';
 import { CounterComponent } from './components/counter/counter.component';
-import { counter } from './components/counter/store';
 import { ThemeTogglerComponent } from './components/theme-toggler/theme-toggler.component';
-import { user } from './components/user/store';
 import { UserComponent } from './components/user/user.component';
-import { theme } from './services/theme/store';
-
-const APP_STORE = {
-  themeStore: theme,
-  userStore: user,
-  counterStore: counter
-};
-
-applyMiddleware(APP_STORE, [keeper(['themeStore', 'counterStore']), logger()]);
+import { ThemeStore } from './store/theme/theme.store';
 
 @NgModule({
   declarations: [AppComponent, CounterComponent, UserComponent, ThemeTogglerComponent],
   imports: [BrowserModule],
-  providers: [
-    {
-      provide: NG_STORE,
-      useValue: APP_STORE
-    }
-  ],
+  providers: [ThemeStore],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

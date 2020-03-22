@@ -1,1 +1,0 @@
-export type ThemeActions = '@INIT' | '@LOAD' | 'SET_THEME';

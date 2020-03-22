@@ -1,6 +1,6 @@
 {
-  "name": "@ng-store/ng-store",
-  "version": "0.0.5",
+  "name": "@2ng/state",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"

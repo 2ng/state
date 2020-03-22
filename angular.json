@@ -3,33 +3,33 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-store": {
+    "state": {
       "projectType": "library",
-      "root": "projects/ng-store",
-      "sourceRoot": "projects/ng-store/src",
+      "root": "projects/state",
+      "sourceRoot": "projects/state/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ng-store/tsconfig.lib.json",
-            "project": "projects/ng-store/ng-package.json"
+            "tsConfig": "projects/state/tsconfig.lib.json",
+            "project": "projects/state/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ng-store/src/test.ts",
-            "tsConfig": "projects/ng-store/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-store/karma.conf.js"
+            "main": "projects/state/src/test.ts",
+            "tsConfig": "projects/state/tsconfig.spec.json",
+            "karmaConfig": "projects/state/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/ng-store/tsconfig.lib.json",
-              "projects/ng-store/tsconfig.spec.json"
+              "projects/state/tsconfig.lib.json",
+              "projects/state/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -65,7 +65,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/ng-store/",
+              "baseHref": "/state/",
               "fileReplacements": [
                 {
                   "replace": "projects/example/src/environments/environment.ts",
@@ -157,5 +157,5 @@
         }
       }
     }},
-  "defaultProject": "ng-store"
+  "defaultProject": "state"
 }

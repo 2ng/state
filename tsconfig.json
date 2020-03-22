@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "ng-store": [
-        "dist/ng-store"
+      "state": [
+        "dist/state"
       ],
-      "ng-store/*": [
-        "dist/ng-store/*"
+      "state/*": [
+        "dist/state/*"
       ]
     }
   },
