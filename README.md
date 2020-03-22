@@ -1,6 +1,6 @@
 # @2ng/state
 
-An ordinary state manager.
+A simple angular-way state manager.
 
 ## Install
 ```
