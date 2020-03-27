@@ -36,6 +36,7 @@ describe('NgState', () => {
   it('should\'nt emit equals', () => {
     const service: TestService = TestBed.get(TestService);
 
+
     let i = 0;
     service.state.changes(state => state.user).subscribe(state => {
       console.log(state);
@@ -48,7 +49,7 @@ describe('NgState', () => {
     service.lowercase();
     service.lowercase();
 
-    // 2 так как первый инит и инк
+    // 2 так как первый init() и один lowercase()
     expect(i).toBe(2);
   });
 
