@@ -10,7 +10,7 @@ export class NgState<T extends { [key: string]: any } = any> {
   state = {
     get: () => this.state$.value,
     changes: <K>(keyOrFn?: keyof T | ((state: T) => K)): Observable<K> =>
-      getChanges(this.state$, keyOrFn as string)
+      getChanges(this.state$, NgState.isEqualFn, keyOrFn)
   };
 
   protected setState = (partialState: Partial<T>): void => {
@@ -29,11 +29,12 @@ export class NgState<T extends { [key: string]: any } = any> {
   }
 }
 
-function getChanges<K>(
-  observable: Observable<any>,
-  keyOrFn?: string | ((state: K) => K)
+function getChanges<T, K>(
+  observable: Observable<T>,
+  isEqualFn: (a: any, b: any) => boolean,
+  keyOrFn?: keyof T | ((state: T) => K)
 ): Observable<K> {
-  let changes = observable;
+  let changes: Observable<any> = observable;
 
   if (typeof keyOrFn === 'string') {
     changes = changes.pipe(pluck(keyOrFn));
@@ -43,5 +44,5 @@ function getChanges<K>(
     changes = changes.pipe(map(state => keyOrFn(state)));
   }
 
-  return changes.pipe(distinctUntilChanged(NgState.isEqualFn));
+  return changes.pipe(distinctUntilChanged(isEqualFn));
 }
