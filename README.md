@@ -280,5 +280,5 @@ export class PageComponent {
 ## Установка
 
 ```
-npm i @2ng/state
+npm i @2ng/state @2utils/is-equal
 ```
