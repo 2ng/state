@@ -8,6 +8,8 @@ export interface State<T extends { [key: string]: any } = any> {
 }
 
 export class NgState<T extends { [key: string]: any } = any> {
+  static isEqualFn: (a: any, b: any) => boolean = isEqual;
+
   private state$ = new BehaviorSubject<T>({} as T);
 
   state: State<T> = {
@@ -30,9 +32,7 @@ export class NgState<T extends { [key: string]: any } = any> {
     });
   }
 
-  private changes(
-    keyOrFn?: keyof T | ((state: T) => any),
-    equalFn: (a: any, b: any) => boolean = isEqual): Observable<any> {
+  private changes(keyOrFn?: keyof T | ((state: T) => any)): Observable<any> {
     let changes: Observable<any> = this.state$;
 
     if (typeof keyOrFn === 'string') {
@@ -43,6 +43,6 @@ export class NgState<T extends { [key: string]: any } = any> {
       changes = changes.pipe(map(state => keyOrFn(state)));
     }
 
-    return changes.pipe(distinctUntilChanged(equalFn));
+    return changes.pipe(distinctUntilChanged(NgState.isEqualFn));
   }
 }
