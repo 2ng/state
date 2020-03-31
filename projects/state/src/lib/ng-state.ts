@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map, pluck } from 'rxjs/operators';
-import isEqual from '@2utils/is-equal';
+import { BehaviorSubject, Observable } from "rxjs";
+import { distinctUntilChanged, map, pluck } from "rxjs/operators";
+import isEqual from "@2utils/is-equal";
 
 export class NgState<T extends { [key: string]: any } = any> {
   static isEqualFn: (a: any, b: any) => boolean = isEqual;
@@ -9,8 +9,7 @@ export class NgState<T extends { [key: string]: any } = any> {
 
   state = {
     get: () => this.state$.value,
-    changes: <K>(keyOrFn?: keyof T | ((state: T) => K)): Observable<K> =>
-      getChanges(this.state$, NgState.isEqualFn, keyOrFn)
+    changes: this.changes
   };
 
   protected setState = (partialState: Partial<T>): void => {
@@ -18,7 +17,7 @@ export class NgState<T extends { [key: string]: any } = any> {
       ...this.state.get(),
       ...partialState
     });
-  }
+  };
 
   constructor(private initialState: T) {
     this.init();
@@ -27,22 +26,20 @@ export class NgState<T extends { [key: string]: any } = any> {
   init() {
     this.setState(this.initialState);
   }
-}
 
-function getChanges<T, K>(
-  observable: Observable<T>,
-  isEqualFn: (a: any, b: any) => boolean,
-  keyOrFn?: keyof T | ((state: T) => K)
-): Observable<K> {
-  let changes: Observable<any> = observable;
+  private changes<K extends keyof T>(key: K): Observable<T[K]>;
+  private changes<K>(fn: (state: T) => K): Observable<K>;
+  private changes(keyOrFn: string | ((state: T) => any)): Observable<any> {
+    let changes: Observable<any> = this.state$;
 
-  if (typeof keyOrFn === 'string') {
-    changes = changes.pipe(pluck(keyOrFn));
+    if (typeof keyOrFn === "string") {
+      changes = changes.pipe(pluck(keyOrFn));
+    }
+
+    if (typeof keyOrFn === "function") {
+      changes = changes.pipe(map(state => keyOrFn(state)));
+    }
+
+    return changes.pipe(distinctUntilChanged(NgState.isEqualFn));
   }
-
-  if (typeof keyOrFn === 'function') {
-    changes = changes.pipe(map(state => keyOrFn(state)));
-  }
-
-  return changes.pipe(distinctUntilChanged(isEqualFn));
 }
