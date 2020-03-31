@@ -31,7 +31,7 @@ export class NgState<T extends { [key: string]: any } = any> {
   private changes<K extends keyof T>(key: K): Observable<T[K]>;
   private changes<K>(fn: (state: T) => K): Observable<K>;
   private changes(keyOrFn?: string | ((state: T) => any)): Observable<any> {
-    let changes: Observable<any> = this.state$;
+    let changes = this.state$.asObservable();
 
     if (typeof keyOrFn === "string") {
       changes = changes.pipe(pluck(keyOrFn));
