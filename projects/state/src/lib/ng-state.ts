@@ -2,14 +2,23 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { distinctUntilChanged, map, pluck } from "rxjs/operators";
 import isEqual from "@2utils/is-equal";
 
+interface State<T> {
+  get: () => T;
+  changes: {
+    (): Observable<T>;
+    <K extends keyof T>(key: K): Observable<T[K]>;
+    <K>(fn: (state: T) => K): Observable<K>;
+  };
+}
+
 export class NgState<T extends { [key: string]: any } = any> {
   static isEqualFn: (a: any, b: any) => boolean = isEqual;
 
   private state$ = new BehaviorSubject<T>({} as T);
 
-  state = {
+  state: State<T> = {
     get: () => this.state$.value,
-    changes: this.changes
+    changes: this.changes.bind(this)
   };
 
   protected setState = (partialState: Partial<T>): void => {
