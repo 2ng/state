@@ -39,10 +39,7 @@ describe('NgState', () => {
 
 
     let i = 0;
-    service.state.changes(state => state.user).subscribe(state => {
-      console.log(state);
-      i++;
-    });
+    service.state.changes().subscribe(state => i++);
 
     service.lowercase();
     service.lowercase();

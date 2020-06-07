@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppTheme } from './config';
-import { NgState } from 'state';
+import { NgState } from 'projects/state/src/lib/ng-state';
 
 export interface Theme {
   theme: keyof typeof AppTheme;
@@ -12,7 +12,6 @@ const initialState: Theme = {
 
 @Injectable()
 export class ThemeStore extends NgState<Theme> {
-
   constructor() {
     super(initialState);
   }
