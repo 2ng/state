@@ -1,25 +1,30 @@
-import { Component } from '@angular/core';
-import { CounterStore } from './store/counter.store';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { CounterFacade } from './counter.facade';
 
 @Component({
   selector: 'app-counter',
   templateUrl: './counter.component.html',
-  providers: [CounterStore]
+  styleUrls: ['./counter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CounterComponent {
-  counter = this.counterStore.state.changes('counter');
+  counter$ = this._facade.counter$;
 
-  constructor(private counterStore: CounterStore) {}
+  @ViewChild('input', { static: true })
+  _input: ElementRef<HTMLInputElement>;
+
+  constructor(private _facade: CounterFacade) {}
 
   increment() {
-    this.counterStore.increment();
+    this._facade.increment();
   }
 
   decrement() {
-    this.counterStore.decrement();
+    this._facade.decrement();
   }
 
   setValue(value: number) {
-    this.counterStore.setValue(value);
+    this._facade.setValue(value);
+    this._input.nativeElement.value = '';
   }
 }

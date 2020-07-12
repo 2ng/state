@@ -2,45 +2,29 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map, pluck } from 'rxjs/operators';
 import isEqual from '@2utils/is-equal';
 
-interface State<T> {
-  get: () => T;
-  changes: {
-    (): Observable<T>;
-    <K extends keyof T>(key: K): Observable<T[K]>;
-    <K>(fn: (state: T) => K): Observable<K>;
-  };
-}
-
 export class NgState<T extends { [key: string]: any } = any> {
-  static isEqualFn: (a: any, b: any) => boolean = isEqual;
+  private _state$ = new BehaviorSubject<T>({} as T);
 
-  private state$ = new BehaviorSubject<T>({} as T);
-
-  state: State<T> = {
-    get: () => this.state$.value,
-    changes: this.changes.bind(this),
-  };
-
-  protected setState = (partialState: Partial<T>): void => {
-    this.state$.next({
-      ...this.state.get(),
-      ...partialState,
-    });
+  protected get state() {
+    return this._state$.value;
   }
 
   constructor(private initialState: T) {
     this.init();
   }
 
-  init() {
-    this.setState(this.initialState);
+  protected setState(partialState: Partial<T>): void {
+    this._state$.next({
+      ...this.state,
+      ...partialState,
+    });
   }
 
-  private changes(): Observable<T>;
-  private changes<K extends keyof T>(key: K): Observable<T[K]>;
-  private changes<K>(fn: (state: T) => K): Observable<K>;
-  private changes(keyOrFn?: string | ((state: T) => any)): Observable<any> {
-    let changes = this.state$.asObservable();
+  protected select(): Observable<T>;
+  protected select<K extends keyof T>(key: K): Observable<T[K]>;
+  protected select<K>(fn: (state: T) => K): Observable<K>;
+  protected select(keyOrFn?: string | ((state: T) => any)): Observable<any> {
+    let changes = this._state$.asObservable();
 
     if (typeof keyOrFn === 'string') {
       changes = changes.pipe(pluck(keyOrFn));
@@ -50,6 +34,10 @@ export class NgState<T extends { [key: string]: any } = any> {
       changes = changes.pipe(map((state) => keyOrFn(state)));
     }
 
-    return changes.pipe(distinctUntilChanged(NgState.isEqualFn));
+    return changes.pipe(distinctUntilChanged(isEqual));
+  }
+
+  init() {
+    this.setState(this.initialState);
   }
 }

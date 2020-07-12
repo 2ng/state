@@ -1,7 +1,15 @@
-<div class="block user">
-  <div class="button-group">
-    <button (click)="lowercase()">LOW</button>
-    {{ user | async }}
-    <button (click)="uppercase()">UP</button>
-  </div>
+<div class="button-group">
+  <button class="button" (click)="lowercase()">LOW</button>
+  {{ name$ | async }}
+  <button class="button" (click)="uppercase()">UP</button>
 </div>
+
+<div class="button-group">
+  <button class="button button--full-width" (click)="loadPhoto()">Load Photo</button>
+</div>
+
+<ng-container *ngIf="loading$ | async as loading">
+  <p *ngIf="loading.pending">Loading...</p>
+</ng-container>
+
+<img class="image" *ngIf="photo$ | async as photo" [src]="photo" />

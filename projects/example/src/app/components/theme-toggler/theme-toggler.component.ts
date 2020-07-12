@@ -1,27 +1,19 @@
-import { Component } from '@angular/core';
-import {ThemeStore} from '../../store/theme/theme.store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ThemeName } from '../../config/theme';
+import { ThemeFacade } from './theme-toggler.facade';
 
 @Component({
   selector: 'app-theme-toggler',
-  template: `
-    <div class="block user">
-      <button
-        [class.active]="(theme | async) === 'DARK_THEME'"
-        (click)="themeStore.setTheme('DARK_THEME')"
-      >
-        Dark Theme
-      </button>
-      <button
-        [class.active]="(theme | async) === 'LIGHT_THEME'"
-        (click)="themeStore.setTheme('LIGHT_THEME')"
-      >
-        Light Theme
-      </button>
-    </div>
-  `
+  templateUrl: './theme-toggler.component.html',
+  styleUrls: ['./theme-toggler.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeTogglerComponent {
-  theme = this.themeStore.state.changes('theme');
+  theme$ = this._facade.theme$;
 
-  constructor(public themeStore: ThemeStore) {}
+  constructor(private _facade: ThemeFacade) {}
+
+  setTheme(theme: ThemeName) {
+    this._facade.setTheme(theme);
+  }
 }

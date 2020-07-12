@@ -1,0 +1,8 @@
+<ng-container *ngIf="theme$ | async as theme">
+  <button class="button" [class.active]="theme === 'DARK'" (click)="setTheme('DARK')">
+    Dark Theme
+  </button>
+  <button class="button" [class.active]="theme === 'LIGHT'" (click)="setTheme('LIGHT')">
+    Light Theme
+  </button>
+</ng-container>

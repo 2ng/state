@@ -1,0 +1,24 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+
+  margin: 0 auto;
+  padding: 24px;
+
+  &--theme-toggler {
+    background-color: var(--user-color);
+  }
+
+  &--counter {
+    background-color: var(--counter-color);
+  }
+
+  &--user {
+    background-color: var(--user-color);
+  }
+}
+
+.title {
+  text-align: center;
+}

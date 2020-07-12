@@ -24,7 +24,12 @@
       ],
       "state/*": [
         "dist/state/*"
-      ]
+      ],
+      "@2ng/state": ["projects/state/src/public-api"],
+      "~components/*": ["projects/example/src/app/components/*"],
+      "~config/*": ["projects/example/src/app/config/*"],
+      "~shared/*": ["projects/example/src/app/shared/*"],
+      "~store/*": ["projects/example/src/app/store/*"]
     }
   },
   "angularCompilerOptions": {

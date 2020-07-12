@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import {Injectable} from '@angular/core';
 import {NgState} from './ng-state';
-import isEqual from '@2utils/is-equal';
 
 @Injectable()
 class TestService extends NgState {
+  state$ = this.select();
+
   constructor() {
     super({
       user: {
@@ -39,7 +40,7 @@ describe('NgState', () => {
 
 
     let i = 0;
-    service.state.changes().subscribe(state => i++);
+    service.state$.subscribe(state => i++);
 
     service.lowercase();
     service.lowercase();
@@ -49,19 +50,5 @@ describe('NgState', () => {
 
     // 2 так как первый init() и один lowercase()
     expect(i).toBe(2);
-  });
-
-  it('should redefined equalFn', () => {
-    const service: TestService = TestBed.get(TestService);
-    const newEqualFn = jasmine.createSpy('newEqualFn', () => {});
-
-    NgState.isEqualFn = newEqualFn;
-
-    service.state.changes().subscribe();
-    service.lowercase();
-
-    expect(newEqualFn).toHaveBeenCalled();
-
-    NgState.isEqualFn = isEqual;
   });
 });

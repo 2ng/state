@@ -1,21 +1,28 @@
-import { Component } from '@angular/core';
-import {UserStore} from './store/user.store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UserFacade } from './user.facade';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  providers: [UserStore]
+  styleUrls: ['./user.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  user = this.userStore.state.changes('user');
+  name$ = this._facade.name$;
+  photo$ = this._facade.photo$;
+  loading$ = this._facade.loading$;
 
-  constructor(private userStore: UserStore) {}
+  constructor(private _facade: UserFacade) {}
 
   uppercase() {
-    this.userStore.uppercase();
+    this._facade.uppercase();
   }
 
   lowercase() {
-    this.userStore.lowercase();
+    this._facade.lowercase();
+  }
+
+  loadPhoto() {
+    this._facade.loadPhoto();
   }
 }

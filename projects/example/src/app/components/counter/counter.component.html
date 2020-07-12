@@ -1,12 +1,9 @@
-<div class="block counter">
-  <div class="button-group">
-    <button (click)="decrement()">-</button>
-    {{ counter | async }}
-    <button (click)="increment()">+</button>
-  </div>
-
-  <label>
-    <input #input />
-  </label>
-  <button (click)="setValue(+input.value)">Set</button>
+<div class="button-group">
+  <button class="button" (click)="decrement()">-</button>
+  {{ counter$ | async }}
+  <button class="button" (click)="increment()">+</button>
 </div>
+
+<input class="input" #input />
+
+<button class="button button--full-width" (click)="setValue(+input.value)">Set</button>
