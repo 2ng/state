@@ -37,6 +37,10 @@ export class HttpService {
    * В случае, если загрузка успешна request эмитит Loading.success(РЕСПОНС_СЕРВЕРА)
    * Компличу notifier, так как он больше не нужен
    *
+   * Для request observable использую кастомный pipe оператор delayRetry,
+   * который перезапускает запрос с определенной задержкой указанное колиичество раз.
+   * По умолчанию задержка 2000, кол-во попыток - 3
+   *
    * TODO(andrey): нужно ли делать notifier = null, notifier.unsubscribe()?
    */
   get<T>(url: string, options?: HttpGetOptions): Observable<LoadingState<T>> {
