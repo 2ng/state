@@ -10,6 +10,8 @@
 
 <ng-container *ngIf="loading$ | async as loading">
   <p *ngIf="loading.pending">Loading...</p>
+  <p *ngIf="loading.attempt">Connection error. Reconnect attempt {{ loading.attempt }} ...</p>
+  <p *ngIf="loading.error">Error message: {{ loading.error }}</p>
 </ng-container>
 
 <img class="image" *ngIf="photo$ | async as photo" [src]="photo" />
