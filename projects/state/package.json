@@ -1,9 +1,4 @@
 {
   "name": "@2ng/state",
-  "version": "0.2.8",
-  "peerDependencies": {
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@2utils/is-equal": "0.0.10"
-  }
+  "version": "0.2.8"
 }
