@@ -1,6 +1,6 @@
 import { NgEffect, NgState } from '@2ng/state';
 import { Injectable } from '@angular/core';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, switchMapTo } from 'rxjs/operators';
 import { UserService } from '~components/user/service/user.service';
 import { UserFacade } from '~components/user/user.facade';
 import { Loading } from '~shared/services/http/class/loading/loading';
@@ -32,7 +32,7 @@ export class UserStore extends NgState<UserState> implements UserFacade {
     switchMap(() => this.userService.loadUser$()),
     tap(({ status, response }) =>
       this.setState({
-        photo: response ? response.photo : null,
+        photo: response ? response.photo : this.state.photo ? this.state.photo : null,
         loading: status,
       })
     )

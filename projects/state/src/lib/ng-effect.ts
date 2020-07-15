@@ -1,7 +1,7 @@
 import { OperatorFunction, Subject } from 'rxjs';
 
 export class NgEffect<T, A, B, C, D, E, F, G, H, I> {
-  private _subject = new Subject();
+  private _subject = new Subject<T>();
 
   constructor(
     op1?: OperatorFunction<T, A>,
@@ -20,8 +20,8 @@ export class NgEffect<T, A, B, C, D, E, F, G, H, I> {
     this._subject.pipe(...operations).subscribe();
   }
 
-  next(d?: T) {
-    this._subject.next();
+  next(data?: T) {
+    this._subject.next(data);
   }
 
   unsubscribe() {

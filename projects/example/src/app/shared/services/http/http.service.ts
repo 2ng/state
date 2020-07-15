@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, merge, Observable, of, timer } from 'rxjs';
 import { catchError, map, switchMapTo, tap } from 'rxjs/operators';
-import { Loading } from './http/class/loading/loading';
-import { LoadingState } from './http/class/loading/loading.interface';
-import { HttpGetOptions } from './http/models/http';
-import { delayRetry } from './http/utils/delayRetry';
+import { Loading } from './class/loading/loading';
+import { LoadingState } from './class/loading/loading.interface';
+import { HttpGetOptions } from './models/http';
+import { delayRetry } from './utils/delayRetry';
 
 /**
  * Искусственный делей для запросов, для лучшего юзер экспириенса
@@ -49,7 +49,9 @@ export class HttpService {
     const request = this._http.get<T>(url, options).pipe(
       delayRetry(attempt => notifier.next(Loading.attempt(attempt))),
       catchError((err: Error) => of(new Error(err.message))),
-      map(resOrErr => (resOrErr instanceof Error ? Loading.error(resOrErr) : Loading.success(resOrErr))),
+      map(resOrErr =>
+        resOrErr instanceof Error ? Loading.error(resOrErr) : Loading.success(resOrErr)
+      ),
       tap(() => notifier.complete())
     );
 

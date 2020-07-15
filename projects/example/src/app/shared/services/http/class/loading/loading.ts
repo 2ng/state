@@ -29,7 +29,7 @@ export class Loading {
     return {
       status: {
         pending: false,
-        success: false,
+        success: true,
         error: null,
         attempt: 0,
       },
