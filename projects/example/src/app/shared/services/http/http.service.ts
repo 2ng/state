@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, merge, Observable, of, timer } from 'rxjs';
-import { catchError, map, switchMapTo, tap } from 'rxjs/operators';
-import { Loading } from './class/loading/loading';
-import { LoadingState } from './class/loading/loading.interface';
+import { Observable, of, timer } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Request } from './class/loading/request';
+import { RequestState } from './class/loading/loading.interface';
 import { HttpGetOptions } from './models/http';
 import { delayRetry } from './utils/delayRetry';
 
@@ -19,44 +19,64 @@ export class HttpService {
   constructor(private _http: HttpClient) {}
 
   /**
-   * Метод возвращает observable типа LoadingState. Он всегда имеет два ключа:
+   * Метод возвращает observable типа RequestState. Он всегда имеет два ключа:
    *  - status: {
    *      pending: boolean;      // флаг загрузки
    *      success: boolean;      // флаг успешного завершения загрузки
    *      error: string | null;  // сообщение ошибки, если есть
    *      attempt: number;       // количество попыток загрузки
+   *      progress:  {          // прогресс загрузки
+   *        loaded?: number;
+   *        total?: number;
+   *      }
    *  };
    *
    *  - response: T | null       // ответ сервера, если есть
    *
-   * В методе создаю notifier, который эмитит текущее состояние загрузки:
-   *  - Loading.pending() - при старте загрузки
-   *  - Loading.attempt(НОМЕР_ПОПЫТКИ) - при попытке реконнекта
-   *  - Loading.error(ТЕКСТ_ОШИБКИ) - при ошибке
+   * На каждое событие HttpEventType эмитится объект:
+   *  - Request.pending() - при старте загрузки
+   *  - Request.attempt(НОМЕР_ПОПЫТКИ) - при попытке реконнекта
+   *  - Request.progress(ПРОГРЕСС_ЭВЕНТ) - при прогрессе загрузки
+   *  - Request.error(ТЕКСТ_ОШИБКИ) - при ошибке
+   *  - Request.success(РЕСПОНС_СЕРВЕРА)
    *
-   * В случае, если загрузка успешна request эмитит Loading.success(РЕСПОНС_СЕРВЕРА)
-   * Компличу notifier, так как он больше не нужен
-   *
-   * Для request observable использую кастомный pipe оператор delayRetry,
+   * Для запроса использую кастомный pipe оператор delayRetry,
    * который перезапускает запрос с определенной задержкой указанное колиичество раз.
    * По умолчанию задержка 2000, кол-во попыток - 3
    *
-   * TODO(andrey): нужно ли делать notifier = null, notifier.unsubscribe()?
    */
-  get<T>(url: string, options?: HttpGetOptions): Observable<LoadingState<T>> {
-    const notifier = new BehaviorSubject(Loading.pending());
+  get<T>(url: string, options?: HttpGetOptions): Observable<RequestState<T>> {
+    return this._http
+      .get<T>(url, {
+        ...options,
+        reportProgress: true,
+        observe: 'events',
+      })
+      .pipe(
+        delayRetry(),
+        catchError((err: Error) => of(new Error(err.message))),
+        switchMap(reqOrErr => {
+          if (reqOrErr instanceof Error) {
+            return of(Request.error(reqOrErr));
+          }
 
-    const request = this._http.get<T>(url, options).pipe(
-      delayRetry(attempt => notifier.next(Loading.attempt(attempt))),
-      catchError((err: Error) => of(new Error(err.message))),
-      map(resOrErr =>
-        resOrErr instanceof Error ? Loading.error(resOrErr) : Loading.success(resOrErr)
-      ),
-      tap(() => notifier.complete())
-    );
+          const { event, attempt } = reqOrErr;
 
-    const delayedRequest = timer(UX_DELAY).pipe(switchMapTo(request));
+          if (
+            event.type === HttpEventType.Sent ||
+            event.type === HttpEventType.ResponseHeader
+          ) {
+            return of(Request.pending(attempt));
+          }
 
-    return merge(notifier, delayedRequest);
+          if (event.type === HttpEventType.DownloadProgress) {
+            return attempt ? of(Request.pending(attempt)) : of(Request.progress(event));
+          }
+
+          if (event.type === HttpEventType.Response) {
+            return timer(UX_DELAY).pipe(map(() => Request.success(event)));
+          }
+        })
+      );
   }
 }

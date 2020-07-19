@@ -1,0 +1,22 @@
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.button {
+  width: 50px;
+  height: 50px;
+
+  &--full-width {
+    width: 100%;
+  }
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+}

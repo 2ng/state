@@ -4,18 +4,18 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { UserService } from '~components/user/service/user.service';
 import { UserFacade } from '~components/user/user.facade';
-import { Loading } from '~shared/services/http/class/loading/loading';
-import { LoadingStatus } from '~shared/services/http/class/loading/loading.interface';
+import { Request } from '~shared/services/http/class/loading/request';
+import { RequestStatus } from '~shared/services/http/class/loading/loading.interface';
 
 @Injectable()
-export class UserBehaviorSubjectService implements UserFacade {
+export class UserBehaviorSubjectStore implements UserFacade {
   private _name = new BehaviorSubject('andrey');
   name$ = this._name.asObservable().pipe(distinctUntilChanged());
 
   private _photo = new BehaviorSubject<string>(null);
   photo$ = this._photo.asObservable().pipe(distinctUntilChanged());
 
-  private _loading = new BehaviorSubject<LoadingStatus>(Loading.idle().status);
+  private _loading = new BehaviorSubject<RequestStatus>(Request.idle().status);
   loading$ = this._loading.asObservable().pipe(distinctUntilChanged(isEqual));
 
   get name() {
@@ -26,7 +26,7 @@ export class UserBehaviorSubjectService implements UserFacade {
 
   constructor(private userService: UserService) {
     this.loadPhotoEffect
-      .pipe(switchMap(() => this.userService.loadUser$()))
+      .pipe(switchMap(() => this.userService.loadPhoto$()))
       .subscribe(({ status, response }) => {
         if (response) {
           this._photo.next(response.photo);

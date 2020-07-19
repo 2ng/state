@@ -1,0 +1,11 @@
+<div class="button-group">
+  <button class="button" (click)="lowercase.emit()">LOW</button>
+  {{ name }}
+  <button class="button" (click)="uppercase.emit()">UP</button>
+</div>
+
+<div class="button-group">
+  <button class="button button--full-width" (click)="loadPhoto.emit()">Load Photo</button>
+</div>
+
+<img class="image" *ngIf="photo" [src]="photo" />

@@ -9,7 +9,7 @@ import { UserResponse } from '../models/user-response';
 export class UserService {
   constructor(private _http: HttpService) {}
 
-  loadUser$() {
+  loadPhoto$() {
     return this._http.get<UserResponse>(api.getUser);
   }
 }

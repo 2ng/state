@@ -1,11 +1,14 @@
-export interface LoadingStatus {
+import { HttpProgressEvent } from '@angular/common/http';
+
+export interface RequestStatus {
   pending: boolean;
   success: boolean;
   error: string;
   attempt: number;
+  progress?: HttpProgressEvent;
 }
 
-export interface LoadingState<T = any> {
-  status: LoadingStatus;
+export interface RequestState<T = any> {
+  status: RequestStatus;
   response: T | null;
 }
