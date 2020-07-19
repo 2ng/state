@@ -1,6 +1,6 @@
 import { NgState } from '@2ng/state';
 import { Injectable } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { exhaustMap, map } from 'rxjs/operators';
 import { UserService } from '~components/user/service/user.service';
 import { UserFacade } from '~components/user/user.facade';
 import { RequestStatus } from '~shared/services/http/class/loading/loading.interface';
@@ -27,7 +27,7 @@ export class UserStore extends NgState<UserState> implements UserFacade {
   // Actions
   /** @action Загружает фото пользователя */
   LOAD_PHOTO = this.pipe(
-    switchMap(() => this.userService.loadPhoto$()),
+    exhaustMap(() => this.userService.loadPhoto$()),
     map(({ status, response }) => ({
       photo: response?.photo || this.state.photo,
       loading: status,

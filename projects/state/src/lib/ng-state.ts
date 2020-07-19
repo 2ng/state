@@ -1,6 +1,6 @@
 import isEqual from '@2utils/is-equal';
 import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, exhaustMap, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, tap } from 'rxjs/operators';
 
 export type Action = (actions: Observable<void>) => Observable<any>;
 
@@ -15,7 +15,7 @@ export class NgState<T extends { [key: string]: any } = any> {
 
   private _actions$$: Subscription = this._actions
     .pipe(
-      exhaustMap(({ action, payload }) => action(of(payload))),
+      mergeMap(({ action, payload }) => action(of(payload))),
       tap(partialState => this.setState(partialState))
     )
     .subscribe();
